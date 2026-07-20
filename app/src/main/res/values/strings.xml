@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">שבת שלום</string>
+    <string name="app_name">Shabbat</string>
     <string name="widget_desc_shabbat">כניסת ויציאת השבת הקרובה</string>
     <string name="widget_desc_netz">זמן הנץ החמה היום</string>
     <string name="widget_desc_tzeit">זמן צאת הכוכבים היום</string>
