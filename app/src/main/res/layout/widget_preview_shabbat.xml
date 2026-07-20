@@ -2,24 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical" android:gravity="center"
-    android:background="@drawable/widget_bg" android:layoutDirection="rtl" android:padding="10dp">
+    android:background="@drawable/widget_bg" android:layoutDirection="rtl" android:padding="12dp">
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="🕯️ שבת · ירושלים" android:textSize="12sp" android:textColor="#7A8A9E" android:layout_marginBottom="6dp"/>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="🕯️ שבת · ירושלים" android:textSize="12sp" android:textColor="#7A8A9E" android:layout_marginBottom="10dp"/>
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:orientation="horizontal" android:gravity="center">
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-            android:orientation="vertical" android:gravity="center">
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:orientation="vertical" android:gravity="center"
+            android:layout_marginStart="20dp" android:layout_marginEnd="20dp">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="כניסה" android:textSize="11sp" android:textColor="#F5A623"/>
+                android:text="כניסה" android:textSize="11sp" android:textColor="#F5A623" android:layout_marginBottom="2dp"/>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="19:15" android:textSize="24sp" android:textStyle="bold" android:textColor="#F5A623"/>
+                android:text="19:15" android:textSize="26sp" android:textStyle="bold" android:textColor="#F5A623"/>
         </LinearLayout>
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-            android:orientation="vertical" android:gravity="center">
+        <View android:layout_width="1dp" android:layout_height="42dp" android:background="#22FFFFFF"/>
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:orientation="vertical" android:gravity="center"
+            android:layout_marginStart="20dp" android:layout_marginEnd="20dp">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="יציאה" android:textSize="11sp" android:textColor="#C4B5FD"/>
+                android:text="יציאה" android:textSize="11sp" android:textColor="#C4B5FD" android:layout_marginBottom="2dp"/>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="20:25" android:textSize="24sp" android:textStyle="bold" android:textColor="#C4B5FD"/>
+                android:text="20:25" android:textSize="26sp" android:textStyle="bold" android:textColor="#C4B5FD"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
