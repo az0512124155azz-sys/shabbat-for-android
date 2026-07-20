@@ -17,6 +17,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.avishait.shabbat.widgets.WidgetUpdater
+import java.io.File
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -69,10 +72,47 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        webView.loadUrl("file:///android_asset/shabbat.html")
+        loadContent()
 
         if (ShabbatCore.notifEnabled(this)) NotificationScheduler.rescheduleAll(this)
         WidgetUpdater.updateAll(this)
+    }
+
+    /**
+     * Over-the-air content updates: load the cached copy of shabbat.html if a
+     * newer one was downloaded, otherwise the bundled asset. Then quietly
+     * fetch the latest version from GitHub for next launch, so small changes
+     * (design tweaks, new cities) reach users without an app-store update.
+     */
+    private fun loadContent() {
+        val cached = File(filesDir, "shabbat.html")
+        if (cached.exists() && cached.length() > 10000) {
+            webView.loadUrl("file://" + cached.absolutePath)
+        } else {
+            webView.loadUrl("file:///android_asset/shabbat.html")
+        }
+        Thread {
+            try {
+                val url = URL("https://raw.githubusercontent.com/az0512124155azz-sys/shabbat-for-android/main/app/src/main/assets/shabbat.html")
+                val conn = url.openConnection() as HttpURLConnection
+                conn.connectTimeout = 10000
+                conn.readTimeout = 15000
+                if (conn.responseCode == 200) {
+                    val body = conn.inputStream.bufferedReader(Charsets.UTF_8).readText()
+                    val valid = body.length > 10000 &&
+                            body.contains("hdr-title") &&
+                            body.trimEnd().endsWith("</html>")
+                    if (valid && (!cached.exists() || cached.readText(Charsets.UTF_8) != body)) {
+                        val tmp = File(filesDir, "shabbat.html.tmp")
+                        tmp.writeText(body, Charsets.UTF_8)
+                        tmp.renameTo(cached)
+                    }
+                }
+                conn.disconnect()
+            } catch (e: Exception) {
+                // offline or fetch failed — keep current content
+            }
+        }.start()
     }
 
     override fun onResume() {
