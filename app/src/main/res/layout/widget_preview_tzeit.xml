@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:gravity="center"
+    android:background="@drawable/widget_bg" android:layoutDirection="rtl" android:padding="10dp">
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="✨ צאת הכוכבים" android:textSize="12sp" android:textColor="#7A8A9E" android:layout_marginBottom="4dp"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="19:50" android:textSize="28sp" android:textStyle="bold" android:textColor="#C4B5FD"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="ירושלים" android:textSize="10sp" android:textColor="#4A5A70" android:layout_marginTop="2dp"/>
+</LinearLayout>
