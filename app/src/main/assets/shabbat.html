@@ -129,17 +129,17 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
       <div class="shab-date" id="evDate"></div>
       <div class="times">
         <div class="tb">
-          <div class="tb-icon">🕯️</div>
-          <div class="tb-lbl">כניסה</div>
+          <div class="tb-icon" id="iconCandle">🕯️</div>
+          <div class="tb-lbl" id="lblCandle">כניסה</div>
           <div class="tb-val cv" id="tCandle">--:--</div>
           <div class="tb-sub" id="subCandle">יום שישי</div>
         </div>
         <div class="times-arr">←</div>
         <div class="tb">
-          <div class="tb-icon">⭐</div>
-          <div class="tb-lbl">יציאה</div>
+          <div class="tb-icon" id="iconHav">⭐</div>
+          <div class="tb-lbl" id="lblHav">יציאה</div>
           <div class="tb-val hv" id="tHav">--:--</div>
-          <div class="tb-sub">מוצאי שבת</div>
+          <div class="tb-sub" id="subHav">מוצאי שבת</div>
         </div>
       </div>
     </div>
@@ -265,8 +265,28 @@ var tzetF=function(la,lo,d){return sol(la,lo,d,false,96);};
 var candF=function(la,lo,d){var s=ssU(la,lo,d);return s?new Date(s.getTime()-18*60000):null;};
 // Havdalah = 42 min after sunset (standard)
 var havdF=function(la,lo,d){var s=ssU(la,lo,d);return s?new Date(s.getTime()+42*60000):null;};
+// Alot hashachar (dawn) – sun 16.1° below horizon; fallback 72 min before sunrise
+var dawnF=function(la,lo,d){var r=sol(la,lo,d,true,106.1);if(r)return r;var s=srU(la,lo,d);return s?new Date(s.getTime()-72*60000):null;};
 
 function nxtDow(from,dow){var d=new Date(from);d.setHours(12,0,0,0);var diff=(dow-d.getDay()+7)%7||7;d.setDate(d.getDate()+diff);return d;}
+
+// ── Observance (Shabbat / Yom Tov / fast) entry & exit times ──────────────────
+function obsFor(la,lo,h){
+  var first=new Date(h.d.getFullYear(),h.d.getMonth(),h.d.getDate());first.setHours(12,0,0,0);
+  var last=new Date((h.end||h.d).getFullYear(),(h.end||h.d).getMonth(),(h.end||h.d).getDate());last.setHours(12,0,0,0);
+  var erev=new Date(first);erev.setDate(erev.getDate()-1);
+  if(h.f){ // fast
+    if(h.mj) // Yom Kippur / Tisha B'Av – begins the evening before, ends at nightfall
+      return{title:h.n,kind:"fast",entry:candF(la,lo,erev),exit:tzetF(la,lo,first),
+             lblIn:"תחילת הצום",lblOut:"סיום הצום",subIn:"ליל הצום",subOut:"צאת הכוכבים",icoIn:"🌙",icoOut:"⭐"};
+    return{title:"צום "+h.n,kind:"fast",entry:dawnF(la,lo,first),exit:tzetF(la,lo,first),
+           lblIn:"תחילת הצום",lblOut:"סיום הצום",subIn:"עלות השחר",subOut:"צאת הכוכבים",icoIn:"🌅",icoOut:"⭐"};
+  }
+  if(h.yt) // Yom Tov – candle lighting to havdalah
+    return{title:h.n,kind:"chag",entry:candF(la,lo,erev),exit:havdF(la,lo,last),
+           lblIn:"כניסה",lblOut:"יציאה",subIn:"כניסת החג",subOut:"צאת החג",icoIn:"🕯️",icoOut:"⭐"};
+  return null; // Hanukkah / Purim – no entry/exit card
+}
 
 function ft(d,tz){
   if(!d)return'--:--';
@@ -286,9 +306,9 @@ function ft(d,tz){
 var HH=[
   {n:"שבועות",d:new Date(2026,4,20),end:new Date(2026,4,21),yt:1},
   {n:"י\"ז בתמוז",d:new Date(2026,6,5),f:1},
-  {n:"תשעה באב",d:new Date(2026,6,26),f:1},
+  {n:"תשעה באב",d:new Date(2026,6,26),f:1,mj:1},
   {n:"ראש השנה",d:new Date(2026,8,11),end:new Date(2026,8,12),yt:1},
-  {n:"יום כיפור",d:new Date(2026,8,20),yt:1,f:1},
+  {n:"יום כיפור",d:new Date(2026,8,20),yt:1,f:1,mj:1},
   {n:"סוכות",d:new Date(2026,8,25),end:new Date(2026,9,1),yt:1},
   {n:"שמיני עצרת",d:new Date(2026,9,2),yt:1},
   {n:"חנוכה",d:new Date(2026,11,4),end:new Date(2026,11,11)},
@@ -296,7 +316,7 @@ var HH=[
   {n:"פסח",d:new Date(2027,3,21),end:new Date(2027,3,28),yt:1},
   {n:"שבועות",d:new Date(2027,5,9),yt:1},
   {n:"ראש השנה",d:new Date(2027,8,1),end:new Date(2027,8,2),yt:1},
-  {n:"יום כיפור",d:new Date(2027,8,10),yt:1,f:1},
+  {n:"יום כיפור",d:new Date(2027,8,10),yt:1,f:1,mj:1},
   {n:"סוכות",d:new Date(2027,8,15),end:new Date(2027,8,21),yt:1},
   {n:"שמיני עצרת",d:new Date(2027,8,22),yt:1},
 ];
@@ -457,25 +477,32 @@ function render(){
   else{fri=nxtDow(today,5);sat=new Date(fri);sat.setDate(sat.getDate()+1);}
 
   var cT=candF(la,lo,fri),hT=havdF(la,lo,sat);
-  var isNow=cT&&hT&&now>=cT&&now<=hT;
-  var tod=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-  var todH=null,nxtH=null;
+  // Shabbat as an observance
+  var shab={title:"שבת הקרובה",kind:"shabbat",entry:cT,exit:hT,
+            lblIn:"כניסה",lblOut:"יציאה",
+            subIn:cT?cT.toLocaleDateString("he-IL",{weekday:"long",timeZone:tz}):"יום שישי",
+            subOut:"מוצאי שבת",icoIn:"🕯️",icoOut:"⭐"};
+  // Nearest holiday/fast whose exit is still in the future
+  var ev=null;
   for(var i=0;i<HH.length;i++){
-    var h=HH[i],hs=new Date(h.d.getFullYear(),h.d.getMonth(),h.d.getDate());
-    if(inH(h,tod)&&!todH)todH=h;
-    if(hs>=tod&&!nxtH)nxtH=h;
+    var o=obsFor(la,lo,HH[i]);
+    if(!o||!o.entry||!o.exit)continue;
+    if(o.exit.getTime()<now.getTime())continue;
+    if(!ev||o.entry.getTime()<ev.entry.getTime())ev=o;
   }
+  // Show the holiday/fast only when it begins no later than the coming Shabbat
+  var show=(ev&&shab.entry&&ev.entry.getTime()<=shab.entry.getTime())?ev:shab;
 
-  var evName="שבת הקרובה";
-  if(isNow)evName=todH&&todH.yt?todH.n:"שבת";
-  else if(todH&&todH.yt)evName=todH.n;
-  else if(nxtH&&nxtH.yt){var dt=Math.ceil((new Date(nxtH.d)-tod)/86400000);if(dt<=7)evName=nxtH.n+" הקרוב";}
-
-  document.getElementById("evTitle").textContent=evName;
-  document.getElementById("evDate").textContent=cT?cT.toLocaleDateString("he-IL",{day:"numeric",month:"long",year:"numeric",timeZone:tz}):"";
-  document.getElementById("tCandle").textContent=ft(cT,tz);
-  document.getElementById("subCandle").textContent=cT?cT.toLocaleDateString("he-IL",{weekday:"long",timeZone:tz}):"יום שישי";
-  document.getElementById("tHav").textContent=ft(hT,tz);
+  document.getElementById("evTitle").textContent=show.title;
+  document.getElementById("evDate").textContent=show.entry?show.entry.toLocaleDateString("he-IL",{day:"numeric",month:"long",year:"numeric",timeZone:tz}):"";
+  document.getElementById("iconCandle").textContent=show.icoIn;
+  document.getElementById("lblCandle").textContent=show.lblIn;
+  document.getElementById("tCandle").textContent=ft(show.entry,tz);
+  document.getElementById("subCandle").textContent=show.subIn;
+  document.getElementById("iconHav").textContent=show.icoOut;
+  document.getElementById("lblHav").textContent=show.lblOut;
+  document.getElementById("tHav").textContent=ft(show.exit,tz);
+  document.getElementById("subHav").textContent=show.subOut;
 
   var para=getPara(sat);
   var pc=document.getElementById("paraCard");
@@ -509,7 +536,7 @@ function togTef(){var tef=gTef(),k=tk();tef[k]=!tef[k];localStorage.setItem("tef
 function refreshNotif(){
   var btn=document.getElementById("notifBtn");
   var active=NATIVE?nativeNotifOn:(gNotif()&&typeof Notification!=="undefined"&&Notification.permission==="granted");
-  if(active){btn.textContent="✓ התראה פעילה — תזכורת לפני שבת ובמוצ״ש";btn.className="on";}
+  if(active){btn.textContent="✅ ההתראה הופעלה";btn.className="on";}
   else{btn.textContent="🔔 הפעל התראה 3 שעות לפני שבת";btn.className="off";if(!NATIVE&&gNotif())localStorage.setItem("shab_notif","false");}
 }
 
