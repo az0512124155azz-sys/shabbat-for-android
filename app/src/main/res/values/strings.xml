@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">שבת שלום</string>
+    <string name="widget_desc_shabbat">כניסת ויציאת השבת הקרובה</string>
+    <string name="widget_desc_netz">זמן הנץ החמה היום</string>
+    <string name="widget_desc_tzeit">זמן צאת הכוכבים היום</string>
+    <string name="widget_desc_sun">הנץ החמה וצאת הכוכבים</string>
+    <string name="widget_desc_parasha">פרשת השבוע</string>
+    <string name="widget_desc_tefillin">מעקב הנחת תפילין יומי</string>
 </resources>

@@ -11,7 +11,12 @@ body{background:radial-gradient(ellipse at 20% 20%,rgba(99,60,180,0.35) 0%,trans
 input,button{font-family:inherit}
 input::placeholder{color:#3a4a5e}
 input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 1000px rgba(15,20,40,0.95) inset!important;-webkit-text-fill-color:#e2e8f0!important}
-.page{max-width:420px;margin:0 auto;padding:36px 16px 56px}
+.page{max-width:420px;margin:0 auto;padding:36px 16px 40px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+#main{flex:1;display:flex;flex-direction:column}
+#main .footer{margin-top:auto}
+#empty{flex:1;display:flex;flex-direction:column;text-align:center}
+.empty-mid{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.empty-foot{border-top:1px solid rgba(255,255,255,0.08);padding-top:22px;padding-bottom:8px}
 
 /* Header */
 .hdr{text-align:center;margin-bottom:26px}
@@ -169,12 +174,12 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
     </div>
   </div>
 
-  <div id="empty" style="text-align:center;padding-top:40px">
-
-    <div style="font-size:100px;line-height:1;margin-bottom:20px">🌍</div>
-
-    <div style="font-size:16px;color:#94a3b8;margin-bottom:48px">הזן שם עיר למעלה כדי להתחיל</div>
-    <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:22px">
+  <div id="empty">
+    <div class="empty-mid">
+      <div style="font-size:100px;line-height:1;margin-bottom:20px">🌍</div>
+      <div style="font-size:16px;color:#94a3b8">הזן שם עיר למעלה כדי להתחיל</div>
+    </div>
+    <div class="empty-foot">
       <div style="font-size:13px;color:rgba(255,255,255,0.22);margin-bottom:8px">Made by Avishai Tzabary</div>
       <div style="font-size:13px;color:#6a7a90">תמיכה טכנית: <a href="mailto:shabbatsupport@gmail.com" style="color:#93c5fd;text-decoration:none;font-weight:600">shabbatsupport@gmail.com</a></div>
     </div>
@@ -366,6 +371,39 @@ function gNotif(){try{return JSON.parse(localStorage.getItem("shab_notif")||"fal
 
 var city=null,LR=[],nTimer=null;
 
+// ── Native bridge (Android WebView / iOS WKWebView) ───────────────────────────
+var NATIVE=(function(){
+  if(window.ShabbatNative)return{
+    city:function(c){try{ShabbatNative.onCityChanged(JSON.stringify(c));}catch(e){}},
+    tef:function(k,v){try{ShabbatNative.setTefillin(k,!!v);}catch(e){}},
+    enable:function(){try{ShabbatNative.enableNotifications();}catch(e){}},
+    disable:function(){try{ShabbatNative.disableNotifications();}catch(e){}}
+  };
+  if(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.shabbat){
+    var post=function(m){try{window.webkit.messageHandlers.shabbat.postMessage(m);}catch(e){}};
+    return{
+      city:function(c){post({cmd:"city",city:c});},
+      tef:function(k,v){post({cmd:"tefillin",key:k,value:!!v});},
+      enable:function(){post({cmd:"enableNotif"});},
+      disable:function(){post({cmd:"disableNotif"});}
+    };
+  }
+  return null;
+})();
+var nativeNotifOn=false;
+window.nativeNotifResult=function(ok){
+  nativeNotifOn=!!ok;
+  if(!ok)alert("כדי לקבל התראות, אשר לאפליקציה הרשאת התראות בהגדרות הטלפון.");
+  refreshNotif();
+};
+window.nativeInit=function(st){
+  try{
+    if(st&&typeof st.notif!=="undefined")nativeNotifOn=!!st.notif;
+    if(st&&st.tef)localStorage.setItem("tef",JSON.stringify(st.tef));
+    if(city)render();else refreshNotif();
+  }catch(e){}
+};
+
 document.getElementById("inp").addEventListener("input",function(){
   var q=this.value.trim(),ul=document.getElementById("sdrop");
   if(!q){ul.className="sdrop";ul.innerHTML="";return;}
@@ -385,6 +423,7 @@ function pick(i){
   city=LR[i];localStorage.setItem("lastCity",JSON.stringify(city));
   document.getElementById("inp").value=city.n+(city.c!=="ישראל"?" – "+city.c:"");
   document.getElementById("sdrop").className="sdrop";
+  if(NATIVE)NATIVE.city(city);
   render();schedNext();
 }
 
@@ -454,16 +493,21 @@ function render(){
   document.getElementById("empty").classList.add("hidden");
 }
 
-function togTef(){var tef=gTef(),k=tk();tef[k]=!tef[k];localStorage.setItem("tef",JSON.stringify(tef));render();}
+function togTef(){var tef=gTef(),k=tk();tef[k]=!tef[k];localStorage.setItem("tef",JSON.stringify(tef));if(NATIVE)NATIVE.tef(k,tef[k]);render();}
 
 function refreshNotif(){
   var btn=document.getElementById("notifBtn");
-  var active=gNotif()&&typeof Notification!=="undefined"&&Notification.permission==="granted";
-  if(active){btn.textContent="✓ התראה פעילה";btn.className="on";}
-  else{btn.textContent="🔔 הפעל התראה 3 שעות לפני שבת";btn.className="off";if(gNotif())localStorage.setItem("shab_notif","false");}
+  var active=NATIVE?nativeNotifOn:(gNotif()&&typeof Notification!=="undefined"&&Notification.permission==="granted");
+  if(active){btn.textContent="✓ התראה פעילה — תזכורת לפני שבת ובמוצ״ש";btn.className="on";}
+  else{btn.textContent="🔔 הפעל התראה 3 שעות לפני שבת";btn.className="off";if(!NATIVE&&gNotif())localStorage.setItem("shab_notif","false");}
 }
 
 function togNotif(){
+  if(NATIVE){
+    if(nativeNotifOn){NATIVE.disable();nativeNotifOn=false;refreshNotif();}
+    else NATIVE.enable();
+    return;
+  }
   if(gNotif()&&typeof Notification!=="undefined"&&Notification.permission==="granted"){
     localStorage.setItem("shab_notif","false");if(nTimer){clearTimeout(nTimer);nTimer=null;}refreshNotif();return;
   }
@@ -476,6 +520,7 @@ function togNotif(){
 }
 
 function schedNext(){
+  if(NATIVE)return;
   if(!city||!gNotif()||typeof Notification==="undefined"||Notification.permission!=="granted")return;
   if(nTimer){clearTimeout(nTimer);nTimer=null;}
   var now=new Date(),la=city.la,lo=city.lo,tz=city.tz;
@@ -496,7 +541,7 @@ function schedNext(){
 }
 
 (function(){
-  try{var s=localStorage.getItem("lastCity");if(s){city=JSON.parse(s);document.getElementById("inp").value=city.n+(city.c!=="ישראל"?" – "+city.c:"");render();schedNext();}}catch(e){}
+  try{var s=localStorage.getItem("lastCity");if(s){city=JSON.parse(s);document.getElementById("inp").value=city.n+(city.c!=="ישראל"?" – "+city.c:"");if(NATIVE)NATIVE.city(city);render();schedNext();}}catch(e){}
 })();
 setInterval(function(){if(city)render();},30000);
 </script>

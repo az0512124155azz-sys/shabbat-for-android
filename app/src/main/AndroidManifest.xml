@@ -4,6 +4,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 
     <application
         android:allowBackup="true"
@@ -21,6 +23,69 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <receiver android:name=".AlarmReceiver" android:exported="false"/>
+
+        <receiver android:name=".BootReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".widgets.ShabbatTimesWidget" android:exported="false"
+            android:label="זמני שבת">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_shabbat"/>
+        </receiver>
+
+        <receiver android:name=".widgets.NetzWidget" android:exported="false"
+            android:label="הנץ החמה">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_netz"/>
+        </receiver>
+
+        <receiver android:name=".widgets.TzeitWidget" android:exported="false"
+            android:label="צאת הכוכבים">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_tzeit"/>
+        </receiver>
+
+        <receiver android:name=".widgets.SunTimesWidget" android:exported="false"
+            android:label="הנץ וצאת הכוכבים">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_sun"/>
+        </receiver>
+
+        <receiver android:name=".widgets.ParashaWidget" android:exported="false"
+            android:label="פרשת השבוע">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_parasha"/>
+        </receiver>
+
+        <receiver android:name=".widgets.TefillinWidget" android:exported="false"
+            android:label="הנחת תפילין">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.avishait.shabbat.TOGGLE_TEF"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_tefillin"/>
+        </receiver>
 
     </application>
 </manifest>
