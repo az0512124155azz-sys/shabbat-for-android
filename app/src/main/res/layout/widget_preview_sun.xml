@@ -15,7 +15,7 @@
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:text="05:45" android:textSize="26sp" android:textStyle="bold" android:textColor="#F5A623"/>
         </LinearLayout>
-        <View android:layout_width="1dp" android:layout_height="42dp" android:background="#22FFFFFF"/>
+        <ImageView android:layout_width="1dp" android:layout_height="42dp" android:background="#22FFFFFF"/>
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:orientation="vertical" android:gravity="center"
             android:layout_marginStart="20dp" android:layout_marginEnd="20dp">

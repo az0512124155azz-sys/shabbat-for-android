@@ -46,7 +46,7 @@
                 android:textColor="#F5A623"/>
         </LinearLayout>
 
-        <View
+        <ImageView
             android:layout_width="1dp"
             android:layout_height="42dp"
             android:background="#22FFFFFF"/>
