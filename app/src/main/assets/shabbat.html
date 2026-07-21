@@ -6,7 +6,7 @@
 <title>שבת שלום</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{min-height:100%;font-family:Arial,Helvetica,sans-serif;direction:rtl;color:#e2e8f0;background:#0a0f1e}
+html,body{min-height:100%;font-family:Arial,Helvetica,sans-serif;color:#e2e8f0;background:#0a0f1e}
 body{background:radial-gradient(ellipse at 20% 20%,rgba(99,60,180,0.35) 0%,transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(30,80,180,0.3) 0%,transparent 55%),#0a0f1e;background-attachment:fixed}
 input,button{font-family:inherit}
 input::placeholder{color:#3a4a5e}
@@ -27,7 +27,7 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
 /* Search */
 .sw{position:relative;margin-bottom:10px}
 .sb{display:flex;align-items:center;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:16px;height:62px;padding:0 20px;gap:12px}
-.sb input{flex:1;background:none;border:none;outline:none;color:#e2e8f0;font-size:18px;text-align:right;min-width:0}
+.sb input{flex:1;background:none;border:none;outline:none;color:#e2e8f0;font-size:18px;text-align:start;min-width:0}
 .sdrop{position:absolute;top:calc(100% + 5px);right:0;left:0;background:rgba(12,18,38,0.98);border:1px solid rgba(255,255,255,0.13);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:14px;z-index:100;display:none;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.85)}
 .sdrop.open{display:block}
 .sdrop li{list-style:none;padding:14px 20px;font-size:16px;border-bottom:1px solid rgba(255,255,255,0.07);cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:#e2e8f0}
@@ -67,11 +67,11 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
 .omer-num{font-size:62px;font-weight:900;color:#4ade80;line-height:1;margin-bottom:4px}
 .omer-lets{font-size:22px;font-weight:700;color:#4ade80;margin-bottom:8px}
 .omer-txt{font-size:14px;color:#86efac;line-height:1.7;margin-bottom:12px}
-.omer-bracha{font-size:13px;color:#6ee7b7;line-height:1.9;background:rgba(74,222,128,0.07);border-radius:10px;padding:13px 14px;text-align:right;white-space:pre-line;border:1px solid rgba(74,222,128,0.2)}
+.omer-bracha{font-size:13px;color:#6ee7b7;line-height:1.9;background:rgba(74,222,128,0.07);border-radius:10px;padding:13px 14px;text-align:right;direction:rtl;white-space:pre-line;border:1px solid rgba(74,222,128,0.2)}
 .omer-soon{font-size:13px;color:#4ade80;margin-top:10px}
 
 /* Parasha */
-.para{padding:16px 18px;margin-bottom:10px;text-align:right;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:16px}
+.para{padding:16px 18px;margin-bottom:10px;text-align:start;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:16px}
 .para-lbl{font-size:11px;font-weight:700;color:#6a7a90;letter-spacing:.6px;margin-bottom:6px}
 .para-name{font-size:22px;font-weight:900;font-style:italic;background:linear-gradient(135deg,#fbbf24,#fde68a);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
@@ -101,13 +101,13 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
   <div class="hdr">
     <div class="hdr-icon">🕯️</div>
     <div class="hdr-title">שבת שלום</div>
-    <div class="hdr-sub">זמני שבת וחגים מדויקים</div>
+    <div class="hdr-sub" data-i18n="tagline">זמני שבת וחגים מדויקים</div>
   </div>
 
   <div class="sw" id="sw">
     <div class="sb">
       <span style="font-size:20px;flex-shrink:0">📍</span>
-      <input id="inp" type="text" placeholder="חפש עיר..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input id="inp" type="text" data-i18n-ph="searchCity" placeholder="חפש עיר..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
     </div>
     <ul class="sdrop" id="sdrop"></ul>
   </div>
@@ -115,11 +115,11 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
   <div id="main" class="hidden">
     <div class="sun-row">
       <div class="sun-c sc-rise">
-        <div class="sun-lbl">נץ החמה</div>
+        <div class="sun-lbl" data-i18n="sunrise">נץ החמה</div>
         <div class="sun-val" id="sunriseT">--:--</div>
       </div>
       <div class="sun-c sc-stars">
-        <div class="sun-lbl">צאת הכוכבים</div>
+        <div class="sun-lbl" data-i18n="nightfall">צאת הכוכבים</div>
         <div class="sun-val" id="starsT">--:--</div>
       </div>
     </div>
@@ -145,22 +145,22 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
     </div>
 
     <div class="omer hidden" id="omerCard">
-      <div class="omer-lbl">📜 ספירת העומר</div>
+      <div class="omer-lbl">📜 <span data-i18n="omerCount">ספירת העומר</span></div>
       <div class="omer-num" id="omerNum"></div>
       <div class="omer-lets" id="omerLets"></div>
       <div class="omer-txt" id="omerTxt"></div>
       <div class="omer-bracha" id="omerBracha"></div>
-      <div class="omer-soon hidden" id="omerSoon">⏳ הספירה תתחיל עם צאת הכוכבים</div>
+      <div class="omer-soon hidden" id="omerSoon" data-i18n="omerSoon">⏳ הספירה תתחיל עם צאת הכוכבים</div>
     </div>
 
     <div class="para" id="paraCard">
-      <div class="para-lbl">📖 פרשת השבוע</div>
+      <div class="para-lbl">📖 <span data-i18n="weeklyParasha">פרשת השבוע</span></div>
       <div class="para-name" id="paraName"></div>
     </div>
 
     <div class="tef">
       <div class="tef-hdr">
-        <div class="tef-title">הנחת תפילין היום</div>
+        <div class="tef-title" data-i18n="tefillinToday">הנחת תפילין היום</div>
         <span style="font-size:28px">👉</span>
       </div>
       <button id="tefBtn" onclick="togTef()">☐ לא הונחו עדיין</button>
@@ -170,14 +170,14 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
 
     <div class="footer">
       <div class="footer-credit">Made by Avishai Tzabary</div>
-      <div class="footer-support">תמיכה טכנית: <a href="mailto:shabbatsupport@gmail.com">shabbatsupport@gmail.com</a></div>
+      <div class="footer-support"><span data-i18n="support">תמיכה טכנית:</span> <a href="mailto:shabbatsupport@gmail.com">shabbatsupport@gmail.com</a></div>
     </div>
   </div>
 
   <div id="empty">
     <div class="empty-mid">
       <div style="font-size:100px;line-height:1;margin-bottom:20px">🌍</div>
-      <div style="font-size:16px;color:#94a3b8">הזן שם עיר למעלה כדי להתחיל</div>
+      <div style="font-size:16px;color:#94a3b8" data-i18n="enterCity">הזן שם עיר למעלה כדי להתחיל</div>
     </div>
     <div class="empty-foot">
       <div style="font-size:13px;color:rgba(255,255,255,0.22);margin-bottom:8px">Made by Avishai Tzabary</div>
@@ -237,6 +237,24 @@ var CI=[
   {n:"בואנוס איירס",e:"Buenos Aires",la:-34.6037,lo:-58.3816,tz:"America/Argentina/Buenos_Aires",c:"ארגנטינה"},
 ];
 
+// ── Language (Hebrew / English, auto by device locale) ────────────────────────
+var LANG=((navigator.language||navigator.userLanguage||'he').toLowerCase().indexOf('he')===0)?'he':'en';
+var FMT_LOCALE=(LANG==='he')?'he-IL':(navigator.language||'en-US');
+var T={
+ he:{tagline:"זמני שבת וחגים מדויקים",searchCity:"חפש עיר...",sunrise:"נץ החמה",nightfall:"צאת הכוכבים",omerCount:"ספירת העומר",omerSoon:"⏳ הספירה תתחיל עם צאת הכוכבים",weeklyParasha:"פרשת השבוע",tefillinToday:"הנחת תפילין היום",enterCity:"הזן שם עיר למעלה כדי להתחיל",support:"תמיכה טכנית:",upcomingShabbat:"שבת הקרובה",entry:"כניסה",exit:"יציאה",friday:"יום שישי",motzaeiShabbat:"מוצאי שבת",holidayInSub:"כניסת החג",holidayOutSub:"צאת החג",fastBegin:"תחילת הצום",fastEnd:"סיום הצום",fastNight:"ליל הצום",fastDawn:"עלות השחר",fastStars:"צאת הכוכבים",tefOn:"✅ הונחו תפילין היום",tefOff:"☐ לא הונחו עדיין",notifOn:"✅ ההתראה הופעלה",notifOff:"🔔 הפעל התראה 3 שעות לפני שבת",openChrome:"פתח ב-Chrome לקבלת התראות",notifDenied:"חסמת התראות. שנה בהגדרות הדפדפן.",notifPerm:"כדי לקבל התראות, אשר לאפליקציה הרשאת התראות בהגדרות הטלפון.",notifNo:"לא אושרו התראות.",fastPrefix:"צום "},
+ en:{tagline:"Accurate Shabbat & holiday times",searchCity:"Search city...",sunrise:"Sunrise",nightfall:"Nightfall",omerCount:"Omer Count",omerSoon:"⏳ Counting begins at nightfall",weeklyParasha:"Weekly Parasha",tefillinToday:"Tefillin today",enterCity:"Enter a city above to begin",support:"Support:",upcomingShabbat:"Upcoming Shabbat",entry:"Entry",exit:"Exit",friday:"Friday",motzaeiShabbat:"Shabbat ends",holidayInSub:"Holiday begins",holidayOutSub:"Holiday ends",fastBegin:"Fast begins",fastEnd:"Fast ends",fastNight:"Eve of fast",fastDawn:"Dawn",fastStars:"Nightfall",tefOn:"✅ Tefillin done today",tefOff:"☐ Not yet",notifOn:"✅ Notifications enabled",notifOff:"🔔 Notify 3 hours before Shabbat",openChrome:"Open in Chrome for notifications",notifDenied:"Notifications blocked. Change in browser settings.",notifPerm:"To get notifications, allow notification permission in phone settings.",notifNo:"Notifications not allowed.",fastPrefix:"Fast of "}
+};
+function t(k){return (T[LANG]&&T[LANG][k]!=null)?T[LANG][k]:(T.he[k]!=null?T.he[k]:k);}
+var COUNTRY_EN={"ישראל":"Israel","ארה״ב":"USA","בריטניה":"UK","צרפת":"France","גרמניה":"Germany","הולנד":"Netherlands","איטליה":"Italy","איחוד האמירויות":"UAE","יפן":"Japan","אוסטרליה":"Australia","קנדה":"Canada","ארגנטינה":"Argentina","בולגריה":"Bulgaria"};
+function cityName(c){return LANG==='he'?c.n:(c.e||c.n);}
+function cityCountry(c){return LANG==='he'?c.c:(COUNTRY_EN[c.c]||c.c);}
+function cityLabel(c){return cityName(c)+(c.c!=="ישראל"?" – "+cityCountry(c):"");}
+function applyLang(){
+ try{document.documentElement.setAttribute('dir',LANG==='he'?'rtl':'ltr');document.documentElement.setAttribute('lang',LANG);}catch(e){}
+ var els=document.querySelectorAll('[data-i18n]');for(var i=0;i<els.length;i++){els[i].textContent=t(els[i].getAttribute('data-i18n'));}
+ var ph=document.querySelectorAll('[data-i18n-ph]');for(var j=0;j<ph.length;j++){ph[j].setAttribute('placeholder',t(ph[j].getAttribute('data-i18n-ph')));}
+}
+
 // ── Sun math – with configurable zenith angle ──────────────────────────────
 function jd(y,m,d){if(m<=2){y--;m+=12;}var A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;}
 
@@ -278,21 +296,21 @@ function obsFor(la,lo,h){
   if(h.f){ // fast
     if(h.mj) // Yom Kippur / Tisha B'Av – begins the evening before, ends at nightfall
       return{title:h.n,kind:"fast",entry:candF(la,lo,erev),exit:tzetF(la,lo,first),
-             lblIn:"תחילת הצום",lblOut:"סיום הצום",subIn:"ליל הצום",subOut:"צאת הכוכבים",icoIn:"🌙",icoOut:"⭐"};
-    return{title:"צום "+h.n,kind:"fast",entry:dawnF(la,lo,first),exit:tzetF(la,lo,first),
-           lblIn:"תחילת הצום",lblOut:"סיום הצום",subIn:"עלות השחר",subOut:"צאת הכוכבים",icoIn:"🌅",icoOut:"⭐"};
+             lblIn:t("fastBegin"),lblOut:t("fastEnd"),subIn:t("fastNight"),subOut:t("fastStars"),icoIn:"🌙",icoOut:"⭐"};
+    return{title:t("fastPrefix")+h.n,kind:"fast",entry:dawnF(la,lo,first),exit:tzetF(la,lo,first),
+           lblIn:t("fastBegin"),lblOut:t("fastEnd"),subIn:t("fastDawn"),subOut:t("fastStars"),icoIn:"🌅",icoOut:"⭐"};
   }
   if(h.yt) // Yom Tov – candle lighting to havdalah
     return{title:h.n,kind:"chag",entry:candF(la,lo,erev),exit:havdF(la,lo,last),
-           lblIn:"כניסה",lblOut:"יציאה",subIn:"כניסת החג",subOut:"צאת החג",icoIn:"🕯️",icoOut:"⭐"};
+           lblIn:t("entry"),lblOut:t("exit"),subIn:t("holidayInSub"),subOut:t("holidayOutSub"),icoIn:"🕯️",icoOut:"⭐"};
   return null; // Hanukkah / Purim – no entry/exit card
 }
 
 function ft(d,tz){
   if(!d)return'--:--';
   try{
-    var s=d.toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",timeZone:tz});
-    if(s&&s.indexOf(':')>-1&&s.length<=5)return s;
+    var s=d.toLocaleTimeString(FMT_LOCALE,{hour:"2-digit",minute:"2-digit",timeZone:tz});
+    if(s&&s.indexOf(':')>-1)return s;
   }catch(e){}
   try{
     var tzDate=new Date(d.toLocaleString('en-US',{timeZone:tz}));
@@ -424,7 +442,7 @@ var NATIVE=(function(){
 var nativeNotifOn=false;
 window.nativeNotifResult=function(ok){
   nativeNotifOn=!!ok;
-  if(!ok)alert("כדי לקבל התראות, אשר לאפליקציה הרשאת התראות בהגדרות הטלפון.");
+  if(!ok)alert(t("notifPerm"));
   refreshNotif();
 };
 window.nativeInit=function(st){
@@ -445,14 +463,14 @@ document.getElementById("inp").addEventListener("input",function(){
   var low=q.toLowerCase();
   LR=CI.filter(function(c){return c.n.indexOf(q)>=0||c.e.toLowerCase().indexOf(low)>=0;}).slice(0,6);
   if(!LR.length){ul.className="sdrop";return;}
-  ul.innerHTML=LR.map(function(_,i){return'<li ontouchend="pick('+i+')" onmousedown="pick('+i+')"><span>'+LR[i].n+'</span><span class="sdrop-c">'+LR[i].c+'</span></li>';}).join("");
+  ul.innerHTML=LR.map(function(_,i){return'<li ontouchend="pick('+i+')" onmousedown="pick('+i+')"><span>'+cityName(LR[i])+'</span><span class="sdrop-c">'+cityCountry(LR[i])+'</span></li>';}).join("");
   ul.className="sdrop open";
 });
 document.addEventListener("click",function(e){if(!e.target.closest("#sw"))document.getElementById("sdrop").className="sdrop";});
 
 function pick(i){
   city=LR[i];localStorage.setItem("lastCity",JSON.stringify(city));
-  document.getElementById("inp").value=city.n+(city.c!=="ישראל"?" – "+city.c:"");
+  document.getElementById("inp").value=cityLabel(city);
   document.getElementById("sdrop").className="sdrop";
   if(NATIVE)NATIVE.city(city);
   render();schedNext();
@@ -478,10 +496,10 @@ function render(){
 
   var cT=candF(la,lo,fri),hT=havdF(la,lo,sat);
   // Shabbat as an observance
-  var shab={title:"שבת הקרובה",kind:"shabbat",entry:cT,exit:hT,
-            lblIn:"כניסה",lblOut:"יציאה",
-            subIn:cT?cT.toLocaleDateString("he-IL",{weekday:"long",timeZone:tz}):"יום שישי",
-            subOut:"מוצאי שבת",icoIn:"🕯️",icoOut:"⭐"};
+  var shab={title:t("upcomingShabbat"),kind:"shabbat",entry:cT,exit:hT,
+            lblIn:t("entry"),lblOut:t("exit"),
+            subIn:cT?cT.toLocaleDateString(FMT_LOCALE,{weekday:"long",timeZone:tz}):t("friday"),
+            subOut:t("motzaeiShabbat"),icoIn:"🕯️",icoOut:"⭐"};
   // Nearest holiday/fast whose exit is still in the future
   var ev=null;
   for(var i=0;i<HH.length;i++){
@@ -523,7 +541,7 @@ function render(){
 
   var tef=gTef(),tt=!!tef[tk()];
   var tb=document.getElementById("tefBtn");
-  tb.textContent=tt?"✅ הונחו תפילין היום":"☐ לא הונחו עדיין";
+  tb.textContent=tt?t("tefOn"):t("tefOff");
   tb.className=tt?"on":"";
 
   refreshNotif();
@@ -536,8 +554,8 @@ function togTef(){var tef=gTef(),k=tk();tef[k]=!tef[k];localStorage.setItem("tef
 function refreshNotif(){
   var btn=document.getElementById("notifBtn");
   var active=NATIVE?nativeNotifOn:(gNotif()&&typeof Notification!=="undefined"&&Notification.permission==="granted");
-  if(active){btn.textContent="✅ ההתראה הופעלה";btn.className="on";}
-  else{btn.textContent="🔔 הפעל התראה 3 שעות לפני שבת";btn.className="off";if(!NATIVE&&gNotif())localStorage.setItem("shab_notif","false");}
+  if(active){btn.textContent=t("notifOn");btn.className="on";}
+  else{btn.textContent=t("notifOff");btn.className="off";if(!NATIVE&&gNotif())localStorage.setItem("shab_notif","false");}
 }
 
 function togNotif(){
@@ -549,11 +567,11 @@ function togNotif(){
   if(gNotif()&&typeof Notification!=="undefined"&&Notification.permission==="granted"){
     localStorage.setItem("shab_notif","false");if(nTimer){clearTimeout(nTimer);nTimer=null;}refreshNotif();return;
   }
-  if(typeof Notification==="undefined"){alert("פתח ב-Chrome לקבלת התראות");return;}
-  if(Notification.permission==="denied"){alert("חסמת התראות. שנה בהגדרות הדפדפן.");return;}
+  if(typeof Notification==="undefined"){alert(t("openChrome"));return;}
+  if(Notification.permission==="denied"){alert(t("notifDenied"));return;}
   Notification.requestPermission().then(function(p){
     if(p==="granted"){localStorage.setItem("shab_notif","true");refreshNotif();schedNext();}
-    else alert("לא אושרו התראות.");
+    else alert(t("notifNo"));
   });
 }
 
@@ -579,7 +597,8 @@ function schedNext(){
 }
 
 (function(){
-  try{var s=localStorage.getItem("lastCity");if(s){city=JSON.parse(s);document.getElementById("inp").value=city.n+(city.c!=="ישראל"?" – "+city.c:"");if(NATIVE)NATIVE.city(city);render();schedNext();}}catch(e){}
+  applyLang();
+  try{var s=localStorage.getItem("lastCity");if(s){city=JSON.parse(s);document.getElementById("inp").value=cityLabel(city);if(NATIVE)NATIVE.city(city);render();schedNext();}}catch(e){}
 })();
 setInterval(function(){if(city)render();},30000);
 </script>
