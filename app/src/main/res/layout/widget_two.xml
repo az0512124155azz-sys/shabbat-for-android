@@ -46,11 +46,12 @@
                 android:id="@+id/wVal1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="23sp"
+                android:textSize="28sp"
                 android:textStyle="bold"
                 android:textColor="#F5A623"
                 android:maxLines="1"
-                android:includeFontPadding="false"/>
+                android:includeFontPadding="false"
+                android:minWidth="80dp"/>
         </LinearLayout>
 
         <ImageView
@@ -76,11 +77,12 @@
                 android:id="@+id/wVal2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="23sp"
+                android:textSize="28sp"
                 android:textStyle="bold"
                 android:textColor="#C4B5FD"
                 android:maxLines="1"
-                android:includeFontPadding="false"/>
+                android:includeFontPadding="false"
+                android:minWidth="80dp"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
