@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Shabbat</string>
-    <string name="widget_desc_shabbat">כניסת ויציאת השבת הקרובה</string>
-    <string name="widget_desc_netz">זמן הנץ החמה היום</string>
-    <string name="widget_desc_tzeit">זמן צאת הכוכבים היום</string>
-    <string name="widget_desc_sun">הנץ החמה וצאת הכוכבים</string>
-    <string name="widget_desc_parasha">פרשת השבוע</string>
-    <string name="widget_desc_tefillin">מעקב הנחת תפילין יומי</string>
+
+    <!-- Widget descriptions -->
+    <string name="widget_desc_shabbat">Shabbat entry and exit times</string>
+    <string name="widget_desc_netz">Sunrise time today</string>
+    <string name="widget_desc_tzeit">Nightfall time today</string>
+    <string name="widget_desc_sun">Sunrise and nightfall times</string>
+    <string name="widget_desc_parasha">Weekly Torah portion</string>
+    <string name="widget_desc_tefillin">Daily tefillin tracking</string>
+
+    <!-- Widget labels -->
+    <string name="widget_label_shabbat">🕯️ Shabbat</string>
+    <string name="widget_label_sunrise">🌅 Sunrise</string>
+    <string name="widget_label_nightfall">✨ Nightfall</string>
+    <string name="widget_label_sun_times">☀️ Today\'s times</string>
+    <string name="widget_label_candle">Entry</string>
+    <string name="widget_label_havdalah">Exit</string>
+    <string name="widget_label_parasha">Weekly Parasha</string>
+
+    <!-- Tefillin button states -->
+    <string name="tefillin_on">✅ Tefillin done</string>
+    <string name="tefillin_off">☐ Not yet</string>
 </resources>

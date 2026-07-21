@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">שבת</string>
+
+    <!-- Widget descriptions -->
+    <string name="widget_desc_shabbat">כניסת ויציאת השבת הקרובה</string>
+    <string name="widget_desc_netz">זמן הנץ החמה היום</string>
+    <string name="widget_desc_tzeit">זמן צאת הכוכבים היום</string>
+    <string name="widget_desc_sun">הנץ החמה וצאת הכוכבים</string>
+    <string name="widget_desc_parasha">פרשת השבוע</string>
+    <string name="widget_desc_tefillin">מעקב הנחת תפילין יומי</string>
+
+    <!-- Widget labels -->
+    <string name="widget_label_shabbat">🕯️ שבת</string>
+    <string name="widget_label_sunrise">🌅 הנץ החמה</string>
+    <string name="widget_label_nightfall">✨ צאת הכוכבים</string>
+    <string name="widget_label_sun_times">☀️ זמני היום</string>
+    <string name="widget_label_candle">כניסה</string>
+    <string name="widget_label_havdalah">יציאה</string>
+    <string name="widget_label_parasha">פרשת השבוע</string>
+
+    <!-- Tefillin button states -->
+    <string name="tefillin_on">✅ הנחתי תפילין</string>
+    <string name="tefillin_off">☐ לא הונחו עדיין</string>
+</resources>

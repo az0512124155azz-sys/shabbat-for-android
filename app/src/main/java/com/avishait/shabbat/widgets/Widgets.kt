@@ -51,27 +51,27 @@ abstract class BaseShabbatWidget : AppWidgetProvider() {
     }
 }
 
-/** כניסת ויציאת שבת */
+/** Shabbat entry and exit times */
 class ShabbatTimesWidget : BaseShabbatWidget() {
     override fun views(ctx: Context): RemoteViews {
         val city = ShabbatCore.cityOrDefault(ctx)
         val t = ShabbatCore.nextShabbat(city)
         val rv = RemoteViews(ctx.packageName, R.layout.widget_two)
-        rv.setTextViewText(R.id.wTitle, "🕯️ שבת · " + city.name)
-        rv.setTextViewText(R.id.wLbl1, "כניסה")
+        rv.setTextViewText(R.id.wTitle, ctx.getString(R.string.widget_label_shabbat) + " · " + city.name)
+        rv.setTextViewText(R.id.wLbl1, ctx.getString(R.string.widget_label_candle))
         rv.setTextViewText(R.id.wVal1, ShabbatCore.fmt(t.candle, city.tz))
-        rv.setTextViewText(R.id.wLbl2, "יציאה")
+        rv.setTextViewText(R.id.wLbl2, ctx.getString(R.string.widget_label_havdalah))
         rv.setTextViewText(R.id.wVal2, ShabbatCore.fmt(t.havdalah, city.tz))
         return rv
     }
 }
 
-/** הנץ החמה */
+/** Sunrise time */
 class NetzWidget : BaseShabbatWidget() {
     override fun views(ctx: Context): RemoteViews {
         val city = ShabbatCore.cityOrDefault(ctx)
         val rv = RemoteViews(ctx.packageName, R.layout.widget_one)
-        rv.setTextViewText(R.id.wTitle, "🌅 הנץ החמה")
+        rv.setTextViewText(R.id.wTitle, ctx.getString(R.string.widget_label_sunrise))
         rv.setTextViewText(R.id.wVal, ShabbatCore.fmt(ShabbatCore.sunrise(city, ShabbatCore.todayNoon()), city.tz))
         rv.setTextColor(R.id.wVal, 0xFFF5A623.toInt())
         rv.setTextViewText(R.id.wSub, city.name)
@@ -79,12 +79,12 @@ class NetzWidget : BaseShabbatWidget() {
     }
 }
 
-/** צאת הכוכבים */
+/** Nightfall time */
 class TzeitWidget : BaseShabbatWidget() {
     override fun views(ctx: Context): RemoteViews {
         val city = ShabbatCore.cityOrDefault(ctx)
         val rv = RemoteViews(ctx.packageName, R.layout.widget_one)
-        rv.setTextViewText(R.id.wTitle, "✨ צאת הכוכבים")
+        rv.setTextViewText(R.id.wTitle, ctx.getString(R.string.widget_label_nightfall))
         rv.setTextViewText(R.id.wVal, ShabbatCore.fmt(ShabbatCore.tzeit(city, ShabbatCore.todayNoon()), city.tz))
         rv.setTextColor(R.id.wVal, 0xFFC4B5FD.toInt())
         rv.setTextViewText(R.id.wSub, city.name)
@@ -92,29 +92,30 @@ class TzeitWidget : BaseShabbatWidget() {
     }
 }
 
-/** הנץ החמה + צאת הכוכבים */
+/** Sunrise and nightfall times */
 class SunTimesWidget : BaseShabbatWidget() {
     override fun views(ctx: Context): RemoteViews {
         val city = ShabbatCore.cityOrDefault(ctx)
         val today = ShabbatCore.todayNoon()
         val rv = RemoteViews(ctx.packageName, R.layout.widget_two)
-        rv.setTextViewText(R.id.wTitle, "☀️ זמני היום · " + city.name)
-        rv.setTextViewText(R.id.wLbl1, "הנץ החמה")
+        rv.setTextViewText(R.id.wTitle, ctx.getString(R.string.widget_label_sun_times) + " · " + city.name)
+        rv.setTextViewText(R.id.wLbl1, ctx.getString(R.string.widget_label_sunrise))
         rv.setTextViewText(R.id.wVal1, ShabbatCore.fmt(ShabbatCore.sunrise(city, today), city.tz))
-        rv.setTextViewText(R.id.wLbl2, "צאת הכוכבים")
+        rv.setTextViewText(R.id.wLbl2, ctx.getString(R.string.widget_label_nightfall))
         rv.setTextViewText(R.id.wVal2, ShabbatCore.fmt(ShabbatCore.tzeit(city, today), city.tz))
         return rv
     }
 }
 
-/** פרשת השבוע */
+/** Weekly Torah portion */
 class ParashaWidget : BaseShabbatWidget() {
     override fun views(ctx: Context): RemoteViews {
         val city = ShabbatCore.cityOrDefault(ctx)
         val t = ShabbatCore.nextShabbat(city)
         val rv = RemoteViews(ctx.packageName, R.layout.widget_parasha)
         val p = ShabbatCore.parasha(t.saturday)
-        rv.setTextViewText(R.id.wParasha, if (p.isEmpty()) "—" else "פרשת $p")
+        val label = ctx.getString(R.string.widget_label_parasha)
+        rv.setTextViewText(R.id.wParasha, if (p.isEmpty()) "—" else "$label $p")
         return rv
     }
 }
@@ -144,7 +145,8 @@ class TefillinWidget : AppWidgetProvider() {
         fun build(ctx: Context): RemoteViews {
             val on = ShabbatCore.isTefillinToday(ctx)
             val rv = RemoteViews(ctx.packageName, R.layout.widget_tefillin)
-            rv.setTextViewText(R.id.wTefBtn, if (on) "✅ הנחתי תפילין" else "☐ לא הונחו עדיין")
+            val btnText = if (on) ctx.getString(R.string.tefillin_on) else ctx.getString(R.string.tefillin_off)
+            rv.setTextViewText(R.id.wTefBtn, btnText)
             rv.setInt(
                 R.id.wTefBtn, "setBackgroundResource",
                 if (on) R.drawable.widget_btn_on else R.drawable.widget_btn_off
