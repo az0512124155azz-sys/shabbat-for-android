@@ -22,4 +22,8 @@
     <!-- Tefillin button states -->
     <string name="tefillin_on">✅ Tefillin done</string>
     <string name="tefillin_off">☐ Not yet</string>
+
+    <!-- Countries -->
+    <string name="country_israel">Israel</string>
+    <string name="country_thailand">Thailand</string>
 </resources>

@@ -22,4 +22,8 @@
     <!-- Tefillin button states -->
     <string name="tefillin_on">✅ הנחתי תפילין</string>
     <string name="tefillin_off">☐ לא הונחו עדיין</string>
+
+    <!-- Countries -->
+    <string name="country_israel">ישראל</string>
+    <string name="country_thailand">תאילנד</string>
 </resources>
