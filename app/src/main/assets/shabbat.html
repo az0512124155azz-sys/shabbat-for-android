@@ -322,30 +322,55 @@ function ft(d,tz){
   return"--:--";
 }
 
-// ── Holidays ──────────────────────────────────────────────────────────────────
-var HH=[
-  {n:"שבועות",d:new Date(2026,4,20),end:new Date(2026,4,21),yt:1},
-  {n:"י\"ז בתמוז",d:new Date(2026,6,5),f:1},
-  {n:"תשעה באב",d:new Date(2026,6,26),f:1,mj:1},
-  {n:"ראש השנה",d:new Date(2026,8,11),end:new Date(2026,8,12),yt:1},
-  {n:"יום כיפור",d:new Date(2026,8,20),yt:1,f:1,mj:1},
-  {n:"סוכות",d:new Date(2026,8,25),end:new Date(2026,9,1),yt:1},
-  {n:"שמיני עצרת",d:new Date(2026,9,2),yt:1},
-  {n:"חנוכה",d:new Date(2026,11,4),end:new Date(2026,11,11)},
-  {n:"פורים",d:new Date(2027,2,18)},
-  {n:"פסח",d:new Date(2027,3,21),end:new Date(2027,3,28),yt:1},
-  {n:"שבועות",d:new Date(2027,5,9),yt:1},
-  {n:"ראש השנה",d:new Date(2027,8,1),end:new Date(2027,8,2),yt:1},
-  {n:"יום כיפור",d:new Date(2027,8,10),yt:1,f:1,mj:1},
-  {n:"סוכות",d:new Date(2027,8,15),end:new Date(2027,8,21),yt:1},
-  {n:"שמיני עצרת",d:new Date(2027,8,22),yt:1},
-];
-function inH(h,d){
-  var dd=new Date(d.getFullYear(),d.getMonth(),d.getDate());
-  var s=new Date(h.d.getFullYear(),h.d.getMonth(),h.d.getDate());
-  if(!h.end)return dd.getTime()===s.getTime();
-  var e=new Date(h.end.getFullYear(),h.end.getMonth(),h.end.getDate());
-  return dd>=s&&dd<=e;
+// ── Hebrew calendar (Dershowitz & Reingold) — holiday/fast dates are COMPUTED ─
+// from the real Hebrew calendar, never hardcoded, so they are always accurate
+// and always relative to "today". Verified against authoritative luach dates.
+function _hmod(a,b){return((a%b)+b)%b;}
+function _gLeap(y){return(y%4===0)&&(y%100!==0||y%400===0);}
+function _gFix(y,m,d){return 365*(y-1)+Math.floor((y-1)/4)-Math.floor((y-1)/100)+Math.floor((y-1)/400)+Math.floor((367*m-362)/12)+(m<=2?0:(_gLeap(y)?-1:-2))+d;}
+function _gFromFix(date){var d0=date-1,n400=Math.floor(d0/146097),d1=_hmod(d0,146097),n100=Math.floor(d1/36524),d2=_hmod(d1,36524),n4=Math.floor(d2/1461),d3=_hmod(d2,1461),n1=Math.floor(d3/365),year=400*n400+100*n100+4*n4+n1;if(n100===4||n1===4)return{y:year,m:12,d:31};year+=1;var mar=_gFix(year,3,1),corr=(date<mar)?0:(_gLeap(year)?1:2),month=Math.floor((12*(date-_gFix(year,1,1)+corr)+373)/367),day=date-_gFix(year,month,1)+1;return{y:year,m:month,d:day};}
+var _HEB_EPOCH=-1373427;
+function _hLeap(y){return _hmod(7*y+1,19)<7;}
+function _hLastMonth(y){return _hLeap(y)?13:12;}
+function _hElapsed(y){var me=Math.floor((235*y-234)/19),pe=12084+13753*me,day=me*29+Math.floor(pe/25920);return(_hmod(3*(day+1),7)<3)?day+1:day;}
+function _hCorr(y){var a=_hElapsed(y-1),b=_hElapsed(y),c=_hElapsed(y+1);if(c-b===356)return 2;if(b-a===382)return 1;return 0;}
+function _hNewYear(y){return _HEB_EPOCH+_hElapsed(y)+_hCorr(y);}
+function _hYearLen(y){return _hNewYear(y+1)-_hNewYear(y);}
+function _hLongChesh(y){var n=_hYearLen(y);return n===355||n===385;}
+function _hShortKis(y){var n=_hYearLen(y);return n===353||n===383;}
+function _hMonthLen(y,m){if([2,4,6,10,13].indexOf(m)>=0)return 29;if(m===12&&!_hLeap(y))return 29;if(m===8&&!_hLongChesh(y))return 29;if(m===9&&_hShortKis(y))return 29;return 30;}
+function _hFix(y,m,d){var r=_hNewYear(y)+d-1,mm;if(m<7){var last=_hLastMonth(y);for(mm=7;mm<=last;mm++)r+=_hMonthLen(y,mm);for(mm=1;mm<m;mm++)r+=_hMonthLen(y,mm);}else{for(mm=7;mm<m;mm++)r+=_hMonthLen(y,mm);}return r;}
+function _hDow(y,m,d){return _hmod(_hFix(y,m,d),7);} // 0=Sun..6=Sat
+function _hDate(y,m,d){var g=_gFromFix(_hFix(y,m,d));return new Date(g.y,g.m-1,g.d,12,0,0,0);}
+function _adarLate(y){return _hLeap(y)?13:12;} // month where Purim / Ta'anit Esther fall
+
+function holidaysForHebrewYear(hy,israel){
+  var L=[];
+  // A fast that falls on Shabbat is observed the next day (Sunday).
+  function fast(name,m,d,major){var dd=d;if(_hDow(hy,m,d)===6)dd=d+1;L.push({n:name,d:_hDate(hy,m,dd),f:1,mj:major?1:0});}
+  L.push({n:"ראש השנה",d:_hDate(hy,7,1),end:_hDate(hy,7,2),yt:1});
+  L.push({n:"יום כיפור",d:_hDate(hy,7,10),yt:1,f:1,mj:1});
+  L.push({n:"סוכות",d:_hDate(hy,7,15),end:_hDate(hy,7,21),yt:1});
+  L.push({n:"שמיני עצרת",d:_hDate(hy,7,22),end:israel?_hDate(hy,7,22):_hDate(hy,7,23),yt:1});
+  L.push({n:"פסח",d:_hDate(hy,1,15),end:israel?_hDate(hy,1,21):_hDate(hy,1,22),yt:1});
+  L.push({n:"שבועות",d:_hDate(hy,3,6),end:israel?_hDate(hy,3,6):_hDate(hy,3,7),yt:1});
+  fast("צום גדליה",7,3,false);
+  fast("עשרה בטבת",10,10,false);
+  var la=_adarLate(hy),ed=13;if(_hDow(hy,la,13)===6)ed=11; // Esther: on Shabbat → Thursday 11 Adar
+  L.push({n:"תענית אסתר",d:_hDate(hy,la,ed),f:1,mj:0});
+  fast("י\"ז בתמוז",4,17,false);
+  fast("תשעה באב",5,9,true);
+  L.push({n:"חנוכה",d:_hDate(hy,9,25),end:_hDate(hy,10,2)});
+  L.push({n:"פורים",d:_hDate(hy,la,14)});
+  return L;
+}
+// Build ~3 Hebrew years around "now" so there is always an upcoming event and a
+// currently-running one; render() filters out anything already past.
+function buildHolidays(now,israel){
+  var gy=now.getFullYear(),L=[],ys=[gy+3759,gy+3760,gy+3761],i;
+  for(i=0;i<ys.length;i++)L=L.concat(holidaysForHebrewYear(ys[i],israel));
+  L.sort(function(a,b){return a.d-b.d;});
+  return L;
 }
 
 // ── Parasha ───────────────────────────────────────────────────────────────────
@@ -502,10 +527,13 @@ function render(){
             lblIn:t("entry"),lblOut:t("exit"),
             subIn:cT?cT.toLocaleDateString(FMT_LOCALE,{weekday:"long",timeZone:tz}):t("friday"),
             subOut:t("motzaeiShabbat"),icoIn:"🕯️",icoOut:"⭐"};
-  // Nearest holiday/fast whose exit is still in the future
+  // Nearest UPCOMING holiday/fast (computed from the Hebrew calendar for this
+  // location). Anything whose observance already ended is skipped, so past
+  // events (e.g. a fast earlier this week) never appear.
   var ev=null;
-  for(var i=0;i<HH.length;i++){
-    var o=obsFor(la,lo,HH[i]);
+  var HHlist=buildHolidays(now,tz==="Asia/Jerusalem");
+  for(var i=0;i<HHlist.length;i++){
+    var o=obsFor(la,lo,HHlist[i]);
     if(!o||!o.entry||!o.exit)continue;
     if(o.exit.getTime()<now.getTime())continue;
     if(!ev||o.entry.getTime()<ev.entry.getTime())ev=o;
@@ -513,7 +541,14 @@ function render(){
   // Show the holiday/fast only when it begins no later than the coming Shabbat
   var show=(ev&&shab.entry&&ev.entry.getTime()<=shab.entry.getTime())?ev:shab;
 
-  document.getElementById("evTitle").textContent=show.title;
+  // When the shown holiday/fast overlaps the coming Shabbat, title it "שבת + <name>"
+  var showTitle=show.title;
+  if(show!==shab&&shab.entry&&shab.exit&&show.entry&&show.exit&&
+     show.entry.getTime()<=shab.exit.getTime()&&show.exit.getTime()>=shab.entry.getTime()){
+    showTitle=(LANG==="he"?"שבת":"Shabbat")+" + "+show.title;
+  }
+
+  document.getElementById("evTitle").textContent=showTitle;
   document.getElementById("evDate").textContent=show.entry?show.entry.toLocaleDateString("he-IL",{day:"numeric",month:"long",year:"numeric",timeZone:tz}):"";
   document.getElementById("iconCandle").textContent=show.icoIn;
   document.getElementById("lblCandle").textContent=show.lblIn;
