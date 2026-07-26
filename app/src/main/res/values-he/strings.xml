@@ -18,6 +18,8 @@
     <string name="widget_label_candle">כניסה</string>
     <string name="widget_label_havdalah">יציאה</string>
     <string name="widget_label_parasha">פרשת השבוע</string>
+    <string name="widget_title_parasha">📖 פרשת השבוע</string>
+    <string name="widget_title_tefillin">👉 תפילין היום</string>
 
     <!-- Tefillin button states -->
     <string name="tefillin_on">✅ הנחתי תפילין</string>

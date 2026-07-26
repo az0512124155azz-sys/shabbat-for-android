@@ -133,6 +133,7 @@ class ParashaWidget : BaseShabbatWidget() {
         val city = ShabbatCore.cityOrDefault(ctx)
         val t = ShabbatCore.nextShabbat(city)
         val rv = RemoteViews(ctx.packageName, R.layout.widget_parasha)
+        rv.setTextViewText(R.id.wTitle, hctx.getString(R.string.widget_title_parasha))
         val p = ShabbatCore.parasha(t.saturday)
         val label = hctx.getString(R.string.widget_label_parasha)
         rv.setTextViewText(R.id.wParasha, if (p.isEmpty()) "—" else "$label $p")
@@ -166,6 +167,7 @@ class TefillinWidget : AppWidgetProvider() {
             val hctx = getHebrewContext(ctx)
             val on = ShabbatCore.isTefillinToday(ctx)
             val rv = RemoteViews(ctx.packageName, R.layout.widget_tefillin)
+            rv.setTextViewText(R.id.wTitle, hctx.getString(R.string.widget_title_tefillin))
             val btnText = if (on) hctx.getString(R.string.tefillin_on) else hctx.getString(R.string.tefillin_off)
             rv.setTextViewText(R.id.wTefBtn, btnText)
             rv.setInt(

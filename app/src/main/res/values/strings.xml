@@ -18,6 +18,8 @@
     <string name="widget_label_candle">Entry</string>
     <string name="widget_label_havdalah">Exit</string>
     <string name="widget_label_parasha">Weekly Parasha</string>
+    <string name="widget_title_parasha">📖 Weekly Parasha</string>
+    <string name="widget_title_tefillin">👉 Tefillin Today</string>
 
     <!-- Tefillin button states -->
     <string name="tefillin_on">✅ Tefillin done</string>
