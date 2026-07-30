@@ -419,6 +419,10 @@ var PM=(function(){
 })();
 var PK=Object.keys(PM).map(Number).sort(function(a,b){return a-b;});
 function getPara(sat){var s=new Date(sat);s.setHours(12,0,0,0);var t=s.getTime();if(PM[t])return PM[t];for(var i=PK.length-1;i>=0;i--)if(PK[i]<=t)return PM[PK[i]];return"";}
+var PARA_EN={"אחרי מות":"Achrei Mot","אחרי מות-קדושים":"Achrei Mot-Kedoshim","אמור":"Emor","בא":"Bo","בהעלותך":"Behaalotcha","בהר":"Behar","בהר-בחוקותי":"Behar-Bechukotai","בחוקותי":"Bechukotai","בלק":"Balak","במדבר":"Bamidbar","בראשית":"Bereshit","בשלח":"Beshalach","דברים":"Devarim","האזינו":"Haazinu","וארא":"Vaera","ואתחנן":"Vaetchanan","ויגש":"Vayigash","ויחי":"Vayechi","ויצא":"Vayetze","ויקהל":"Vayakhel","ויקהל-פקודי":"Vayakhel-Pekudei","ויקרא":"Vayikra","וירא":"Vayera","וישב":"Vayeshev","וישלח":"Vayishlach","חוקת":"Chukat","חיי שרה":"Chayei Sarah","יתרו":"Yitro","כי תבוא":"Ki Tavo","כי תצא":"Ki Teitzei","כי תשא":"Ki Tisa","לך לך":"Lech Lecha","מטות":"Matot","מטות-מסעי":"Matot-Masei","מסעי":"Masei","מצורע":"Metzora","מקץ":"Miketz","משפטים":"Mishpatim","נח":"Noach","נצבים":"Nitzavim","נצבים-וילך":"Nitzavim-Vayelech","נשא":"Naso","עקב":"Eikev","פינחס":"Pinchas","פקודי":"Pekudei","צו":"Tzav","קדושים":"Kedoshim","קרח":"Korach","ראה":"Reeh","שופטים":"Shoftim","שלח":"Shlach","שמות":"Shemot","שמיני":"Shemini","תולדות":"Toldot","תזריע":"Tazria","תזריע-מצורע":"Tazria-Metzora","תצוה":"Tetzaveh","תרומה":"Terumah"};
+var PARA_FR={"אחרי מות":"Aharei Mot","אחרי מות-קדושים":"Aharei Mot-Kedochim","אמור":"Emor","בא":"Bo","בהעלותך":"Behaalotkha","בהר":"Behar","בהר-בחוקותי":"Behar-Behoukotai","בחוקותי":"Behoukotai","בלק":"Balak","במדבר":"Bamidbar","בראשית":"Bereshit","בשלח":"Bechalah","דברים":"Devarim","האזינו":"Haazinou","וארא":"Vaera","ואתחנן":"Vaethanan","ויגש":"Vayigach","ויחי":"Vayehi","ויצא":"Vayetse","ויקהל":"Vayakhel","ויקהל-פקודי":"Vayakhel-Pekoude","ויקרא":"Vayikra","וירא":"Vayera","וישב":"Vayechev","וישלח":"Vayichlah","חוקת":"Houkat","חיי שרה":"Haye Sarah","יתרו":"Yitro","כי תבוא":"Ki Tavo","כי תצא":"Ki Tetse","כי תשא":"Ki Tissa","לך לך":"Lekh Lekha","מטות":"Matot","מטות-מסעי":"Matot-Massei","מסעי":"Massei","מצורע":"Metsora","מקץ":"Miketz","משפטים":"Michpatim","נח":"Noah","נצבים":"Nitsavim","נצבים-וילך":"Nitsavim-Vayelekh","נשא":"Nasso","עקב":"Ekev","פינחס":"Pinhas","פקודי":"Pekoude","צו":"Tsav","קדושים":"Kedochim","קרח":"Korah","ראה":"Reeh","שופטים":"Choftim","שלח":"Chelah Lekha","שמות":"Chemot","שמיני":"Chemini","תולדות":"Toladot","תזריע":"Tazria","תזריע-מצורע":"Tazria-Metsora","תצוה":"Tetsave","תרומה":"Terouma"};
+function paraName(he){if(!he)return"";return LANG==='he'?he:(LANG==='fr'?(PARA_FR[he]||he):(PARA_EN[he]||he));}
+function paraPrefix(){return LANG==='fr'?"Sidra ":(LANG==='en'?"Parashat ":"פרשת ");}
 
 // ── Omer ──────────────────────────────────────────────────────────────────────
 var OS={2026:new Date(2026,3,1),2027:new Date(2027,3,21),2028:new Date(2028,3,10),2029:new Date(2029,3,29)};
@@ -563,7 +567,7 @@ function render(){
 
   var para=getPara(sat);
   var pc=document.getElementById("paraCard");
-  if(para){document.getElementById("paraName").textContent="פרשת "+para;pc.style.display="";}
+  if(para){document.getElementById("paraName").textContent=paraPrefix()+paraName(para);pc.style.display="";}
   else pc.style.display="none";
 
   var omer=getOmer(la,lo,now);
