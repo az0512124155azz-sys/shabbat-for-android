@@ -241,7 +241,7 @@ var CI=[
 
 // ── Language (Hebrew / English / French, auto by device locale) ──────────────
 var LANG=(function(){var l=(navigator.language||navigator.userLanguage||'he').toLowerCase();if(l.indexOf('he')===0)return'he';if(l.indexOf('fr')===0)return'fr';return'en';})();
-var FMT_LOCALE=(LANG==='he')?'he-IL':(LANG==='fr')?'fr-FR':(navigator.language||'en-US');
+var FMT_LOCALE=(LANG==='he')?'he-IL':(LANG==='fr')?'fr-FR':'en-US';
 var T={
  he:{headerTitle:"שבת שלום",tagline:"זמני שבת וחגים מדויקים",searchCity:"חפש עיר...",sunrise:"נץ החמה",nightfall:"צאת הכוכבים",omerCount:"ספירת העומר",omerSoon:"⏳ הספירה תתחיל עם צאת הכוכבים",weeklyParasha:"פרשת השבוע",tefillinToday:"הנחת תפילין היום",enterCity:"הזן שם עיר למעלה כדי להתחיל",support:"תמיכה טכנית:",upcomingShabbat:"שבת הקרובה",entry:"כניסה",exit:"יציאה",friday:"יום שישי",motzaeiShabbat:"מוצאי שבת",holidayInSub:"כניסת החג",holidayOutSub:"צאת החג",fastBegin:"תחילת הצום",fastEnd:"סיום הצום",fastNight:"ליל הצום",fastDawn:"עלות השחר",fastStars:"צאת הכוכבים",tefOn:"✅ הונחו תפילין היום",tefOff:"☐ לא הונחו עדיין",notifOn:"✅ ההתראה הופעלה",notifOff:"🔔 הפעל התראה 3 שעות לפני שבת",openChrome:"פתח ב-Chrome לקבלת התראות",notifDenied:"חסמת התראות. שנה בהגדרות הדפדפן.",notifPerm:"כדי לקבל התראות, אשר לאפליקציה הרשאת התראות בהגדרות הטלפון.",notifNo:"לא אושרו התראות.",fastPrefix:"צום "},
  en:{headerTitle:"Shabbat Shalom",tagline:"Accurate Shabbat & holiday times",searchCity:"Search city...",sunrise:"Sunrise",nightfall:"Nightfall",omerCount:"Omer Count",omerSoon:"⏳ Counting begins at nightfall",weeklyParasha:"Weekly Parasha",tefillinToday:"Tefillin today",enterCity:"Enter a city above to begin",support:"Support:",upcomingShabbat:"Upcoming Shabbat",entry:"Entry",exit:"Exit",friday:"Friday",motzaeiShabbat:"Shabbat ends",holidayInSub:"Holiday begins",holidayOutSub:"Holiday ends",fastBegin:"Fast begins",fastEnd:"Fast ends",fastNight:"Eve of fast",fastDawn:"Dawn",fastStars:"Nightfall",tefOn:"✅ Tefillin done today",tefOff:"☐ Not yet",notifOn:"✅ Notifications enabled",notifOff:"🔔 Notify 3 hours before Shabbat",openChrome:"Open in Chrome for notifications",notifDenied:"Notifications blocked. Change in browser settings.",notifPerm:"To get notifications, allow notification permission in phone settings.",notifNo:"Notifications not allowed.",fastPrefix:"Fast of "},
@@ -313,7 +313,7 @@ function obsFor(la,lo,h){
 function ft(d,tz){
   if(!d)return'--:--';
   try{
-    var s=d.toLocaleTimeString(FMT_LOCALE,{hour:"2-digit",minute:"2-digit",timeZone:tz});
+    var s=d.toLocaleTimeString(FMT_LOCALE,{hour:"2-digit",minute:"2-digit",hour12:(LANG==='en'),timeZone:tz});
     if(s&&s.indexOf(':')>-1)return s;
   }catch(e){}
   try{
