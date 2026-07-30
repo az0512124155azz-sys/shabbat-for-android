@@ -283,8 +283,9 @@ var ssU=function(la,lo,d){return sol(la,lo,d,false,90.833);};
 var srU=function(la,lo,d){return sol(la,lo,d,true,90.833);};
 // Tzet hakochavim = sun 6° below horizon (96°) → matches luach times
 var tzetF=function(la,lo,d){return sol(la,lo,d,false,96);};
-// Candle lighting = 18 min before sunset
-var candF=function(la,lo,d){var s=ssU(la,lo,d);return s?new Date(s.getTime()-18*60000):null;};
+// Candle lighting = 18 min before sunset by default; Jerusalem's well-known custom is 40 min
+function candleOffset(c){return(c&&c.c==="ישראל"&&c.n==="ירושלים")?40:18;}
+var candF=function(la,lo,d,city){var s=ssU(la,lo,d);return s?new Date(s.getTime()-candleOffset(city)*60000):null;};
 // Havdalah = 42 min after sunset (standard)
 var havdF=function(la,lo,d){var s=ssU(la,lo,d);return s?new Date(s.getTime()+42*60000):null;};
 // Alot hashachar (dawn) – sun 16.1° below horizon; fallback 72 min before sunrise
@@ -293,19 +294,19 @@ var dawnF=function(la,lo,d){var r=sol(la,lo,d,true,106.1);if(r)return r;var s=sr
 function nxtDow(from,dow){var d=new Date(from);d.setHours(12,0,0,0);var diff=(dow-d.getDay()+7)%7||7;d.setDate(d.getDate()+diff);return d;}
 
 // ── Observance (Shabbat / Yom Tov / fast) entry & exit times ──────────────────
-function obsFor(la,lo,h){
+function obsFor(la,lo,h,city){
   var first=new Date(h.d.getFullYear(),h.d.getMonth(),h.d.getDate());first.setHours(12,0,0,0);
   var last=new Date((h.end||h.d).getFullYear(),(h.end||h.d).getMonth(),(h.end||h.d).getDate());last.setHours(12,0,0,0);
   var erev=new Date(first);erev.setDate(erev.getDate()-1);
   if(h.f){ // fast
     if(h.mj) // Yom Kippur / Tisha B'Av – begins the evening before, ends at nightfall
-      return{title:h.n,kind:"fast",entry:candF(la,lo,erev),exit:tzetF(la,lo,first),
+      return{title:h.n,kind:"fast",entry:candF(la,lo,erev,city),exit:tzetF(la,lo,first),
              lblIn:t("fastBegin"),lblOut:t("fastEnd"),subIn:t("fastNight"),subOut:t("fastStars"),icoIn:"🌙",icoOut:"⭐"};
     return{title:t("fastPrefix")+h.n,kind:"fast",entry:dawnF(la,lo,first),exit:tzetF(la,lo,first),
            lblIn:t("fastBegin"),lblOut:t("fastEnd"),subIn:t("fastDawn"),subOut:t("fastStars"),icoIn:"🌅",icoOut:"⭐"};
   }
   if(h.yt) // Yom Tov – candle lighting to havdalah
-    return{title:h.n,kind:"chag",entry:candF(la,lo,erev),exit:havdF(la,lo,last),
+    return{title:h.n,kind:"chag",entry:candF(la,lo,erev,city),exit:havdF(la,lo,last),
            lblIn:t("entry"),lblOut:t("exit"),subIn:t("holidayInSub"),subOut:t("holidayOutSub"),icoIn:"🕯️",icoOut:"⭐"};
   return null; // Hanukkah / Purim – no entry/exit card
 }
@@ -527,7 +528,7 @@ function render(){
   }else if(dow===5){fri=new Date(today);sat=new Date(today);sat.setDate(sat.getDate()+1);}
   else{fri=nxtDow(today,5);sat=new Date(fri);sat.setDate(sat.getDate()+1);}
 
-  var cT=candF(la,lo,fri),hT=havdF(la,lo,sat);
+  var cT=candF(la,lo,fri,city),hT=havdF(la,lo,sat);
   // Shabbat as an observance
   var shab={title:t("upcomingShabbat"),kind:"shabbat",entry:cT,exit:hT,
             lblIn:t("entry"),lblOut:t("exit"),
@@ -539,7 +540,7 @@ function render(){
   var ev=null;
   var HHlist=buildHolidays(now,tz==="Asia/Jerusalem");
   for(var i=0;i<HHlist.length;i++){
-    var o=obsFor(la,lo,HHlist[i]);
+    var o=obsFor(la,lo,HHlist[i],city);
     if(!o||!o.entry||!o.exit)continue;
     if(o.exit.getTime()<now.getTime())continue;
     if(!ev||o.entry.getTime()<ev.entry.getTime())ev=o;
@@ -627,9 +628,9 @@ function schedNext(){
   var fri;
   if(now.getDay()===5)fri=new Date(today);
   else fri=nxtDow(today,5);
-  var cT=candF(la,lo,fri);if(!cT)return;
+  var cT=candF(la,lo,fri,city);if(!cT)return;
   var delay=cT.getTime()-Date.now()-3*3600000;
-  if(delay<=0){fri=nxtDow(fri,5);cT=candF(la,lo,fri);if(!cT)return;delay=cT.getTime()-Date.now()-3*3600000;}
+  if(delay<=0){fri=nxtDow(fri,5);cT=candF(la,lo,fri,city);if(!cT)return;delay=cT.getTime()-Date.now()-3*3600000;}
   if(delay>0&&delay<8*86400000){
     var ct=cT,tzz=tz;
     nTimer=setTimeout(function(){
