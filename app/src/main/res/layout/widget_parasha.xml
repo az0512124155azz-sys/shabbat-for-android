@@ -6,23 +6,32 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@drawable/widget_bg"
-    android:layoutDirection="rtl"
-    android:padding="10dp">
+    android:layoutDirection="locale"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/wTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
         android:text="@string/widget_title_parasha"
         android:textSize="12sp"
         android:textColor="#7A8A9E"
-        android:layout_marginBottom="4dp"/>
+        android:maxLines="1"
+        android:ellipsize="end" />
 
     <TextView
         android:id="@+id/wParasha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
         android:textSize="22sp"
         android:textStyle="bold|italic"
-        android:textColor="#FBBF24"/>
+        android:textColor="#FBBF24"
+        android:maxLines="1"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="22sp" />
 </LinearLayout>

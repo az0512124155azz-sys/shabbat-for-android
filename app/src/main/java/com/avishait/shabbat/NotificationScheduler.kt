@@ -40,7 +40,7 @@ object NotificationScheduler {
             if (type == TYPE_EREV) {
                 val c = st.candle ?: continue
                 target = Date(c.time - 3L * 3600000L)
-                label = ShabbatCore.fmt(c, city.tz)
+                label = ShabbatCore.fmt(ctx, c, city.tz)
             } else {
                 val h = st.havdalah ?: continue
                 target = h            // fire exactly at havdalah (Shabbat exit) — no lag

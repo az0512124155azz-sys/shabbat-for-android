@@ -16,13 +16,20 @@ import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.sin
 
-data class City(val name: String, val lat: Double, val lon: Double, val tz: String)
+data class City(val name: String, val nameEn: String, val lat: Double, val lon: Double, val tz: String) {
+    fun localizedName(ctx: Context): String {
+        val lang = ctx.resources.configuration.locales[0].language
+        return when (lang) {
+            "he", "iw" -> name
+            "fr" -> {
+                val resId = ctx.resources.getIdentifier("city_${nameEn.lowercase().replace(" ", "_").replace("'", "")}", "string", ctx.packageName)
+                if (resId != 0) ctx.getString(resId) else nameEn
+            }
+            else -> if (nameEn.isNotEmpty()) nameEn else name
+        }
+    }
+}
 
-/**
- * Native port of the time calculations in assets/shabbat.html.
- * The math must stay identical to the JS version so the app and the
- * widgets/notifications always show the same times.
- */
 object ShabbatCore {
 
     private const val PREFS = "shabbat_prefs"
@@ -30,7 +37,6 @@ object ShabbatCore {
     fun prefs(ctx: Context): SharedPreferences =
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
-    // ── city ──────────────────────────────────────────────────────────────
     fun saveCity(ctx: Context, json: String) {
         prefs(ctx).edit().putString("city", json).apply()
     }
@@ -41,6 +47,7 @@ object ShabbatCore {
             val o = JSONObject(s)
             City(
                 o.optString("n", "ירושלים"),
+                o.optString("e", "Jerusalem"),
                 o.getDouble("la"),
                 o.getDouble("lo"),
                 o.optString("tz", "Asia/Jerusalem")
@@ -51,11 +58,10 @@ object ShabbatCore {
     }
 
     fun cityOrDefault(ctx: Context): City =
-        loadCity(ctx) ?: City("ירושלים", 31.7683, 35.2137, "Asia/Jerusalem")
+        loadCity(ctx) ?: City("ירושלים", "Jerusalem", 31.7683, 35.2137, "Asia/Jerusalem")
 
-    // ── tefillin (date keys are UTC, matching tk() in the HTML) ───────────
     fun todayKey(): String {
-        val f = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val f = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT)
         f.timeZone = TimeZone.getTimeZone("UTC")
         return f.format(Date())
     }
@@ -76,13 +82,11 @@ object ShabbatCore {
 
     fun toggleTefillinToday(ctx: Context) = setTefillin(ctx, todayKey(), !isTefillinToday(ctx))
 
-    // ── notifications flag ────────────────────────────────────────────────
     fun notifEnabled(ctx: Context) = prefs(ctx).getBoolean("notif", false)
     fun setNotifEnabled(ctx: Context, v: Boolean) {
         prefs(ctx).edit().putBoolean("notif", v).apply()
     }
 
-    // ── sun math ──────────────────────────────────────────────────────────
     private fun jd(y0: Int, m0: Int, d: Int): Double {
         var y = y0
         var m = m0
@@ -151,7 +155,6 @@ object ShabbatCore {
         val havdalah: Date?
     )
 
-    /** Mirrors the friday/saturday selection logic in render() of the HTML. */
     fun nextShabbat(city: City, now: Date = Date()): ShabbatTimes {
         val cal = Calendar.getInstance()
         cal.time = now
@@ -182,61 +185,66 @@ object ShabbatCore {
         return ShabbatTimes(fri, sat, candle(city, fri), havdalah(city, sat))
     }
 
-    fun fmt(d: Date?, tz: String): String {
+    fun fmt(ctx: Context, d: Date?, tz: String): String {
         if (d == null) return "--:--"
-        val f = SimpleDateFormat("HH:mm", Locale.US)
+        val lang = ctx.resources.configuration.locales[0].language
+        val isHeb = lang == "he" || lang == "iw"
+        val pattern = if (isHeb) "HH:mm" else "h:mm a"
+        val locale = if (isHeb) Locale.ROOT else Locale.US
+        val f = SimpleDateFormat(pattern, locale)
         f.timeZone = TimeZone.getTimeZone(tz)
         return f.format(d)
     }
 
-    // ── parasha (port of the PM table in the HTML) ────────────────────────
     private val PARASHOT: List<Pair<Int, String>> = listOf(
-        20260103 to "ויחי", 20260110 to "שמות", 20260117 to "וארא", 20260124 to "בא", 20260131 to "בשלח",
-        20260207 to "יתרו", 20260214 to "משפטים", 20260221 to "תרומה", 20260228 to "תצוה",
-        20260307 to "כי תשא", 20260314 to "ויקהל-פקודי", 20260321 to "ויקרא", 20260328 to "צו",
-        20260411 to "שמיני", 20260418 to "תזריע-מצורע", 20260425 to "אחרי מות-קדושים",
-        20260502 to "אמור", 20260509 to "בהר-בחוקותי", 20260516 to "במדבר", 20260523 to "נשא", 20260530 to "בהעלותך",
-        20260606 to "שלח", 20260613 to "קרח", 20260620 to "חוקת", 20260627 to "בלק",
-        20260704 to "פינחס", 20260711 to "מטות-מסעי", 20260718 to "דברים", 20260725 to "ואתחנן",
-        20260801 to "עקב", 20260808 to "ראה", 20260815 to "שופטים", 20260822 to "כי תצא", 20260829 to "כי תבוא",
-        20260905 to "נצבים-וילך", 20260919 to "האזינו",
-        20261010 to "בראשית", 20261017 to "נח", 20261024 to "לך לך", 20261031 to "וירא",
-        20261107 to "חיי שרה", 20261114 to "תולדות", 20261121 to "ויצא", 20261128 to "וישלח",
-        20261205 to "וישב", 20261212 to "מקץ", 20261219 to "ויגש", 20261226 to "ויחי",
-        20270102 to "שמות", 20270109 to "וארא", 20270116 to "בא", 20270123 to "בשלח", 20270130 to "יתרו",
-        20270206 to "משפטים", 20270213 to "תרומה", 20270220 to "תצוה", 20270227 to "כי תשא",
-        20270306 to "ויקהל", 20270313 to "פקודי", 20270320 to "ויקרא", 20270327 to "צו",
-        20270403 to "שמיני", 20270410 to "תזריע", 20270417 to "מצורע",
-        20270501 to "אחרי מות", 20270508 to "קדושים", 20270515 to "אמור", 20270522 to "בהר", 20270529 to "בחוקותי",
-        20270605 to "במדבר", 20270612 to "נשא", 20270619 to "בהעלותך", 20270626 to "שלח",
-        20270703 to "קרח", 20270710 to "חוקת", 20270717 to "בלק", 20270724 to "פינחס", 20270731 to "מטות",
-        20270807 to "מסעי", 20270814 to "דברים", 20270821 to "ואתחנן", 20270828 to "עקב",
-        20270904 to "ראה", 20270911 to "שופטים", 20270918 to "כי תצא", 20270925 to "כי תבוא",
-        20271009 to "נצבים-וילך", 20271016 to "האזינו", 20271030 to "בראשית",
-        20271106 to "נח", 20271113 to "לך לך", 20271120 to "וירא", 20271127 to "חיי שרה",
-        20271204 to "תולדות", 20271211 to "ויצא", 20271218 to "וישלח", 20271225 to "וישב",
-        20280101 to "מקץ", 20280108 to "ויגש", 20280115 to "ויחי", 20280122 to "שמות", 20280129 to "וארא",
-        20280205 to "בא", 20280212 to "בשלח", 20280219 to "יתרו", 20280226 to "משפטים",
-        20280304 to "תרומה", 20280311 to "תצוה", 20280318 to "כי תשא", 20280325 to "ויקהל",
-        20280401 to "פקודי", 20280408 to "ויקרא", 20280429 to "צו",
-        20280506 to "שמיני", 20280513 to "תזריע-מצורע", 20280520 to "אחרי מות-קדושים", 20280527 to "אמור",
-        20280603 to "בהר-בחוקותי", 20280610 to "במדבר", 20280617 to "נשא", 20280624 to "בהעלותך",
-        20280701 to "שלח", 20280708 to "קרח", 20280715 to "חוקת", 20280722 to "בלק", 20280729 to "פינחס",
-        20280805 to "מטות-מסעי", 20280812 to "דברים", 20280819 to "ואתחנן", 20280826 to "עקב",
-        20280902 to "ראה", 20280909 to "שופטים", 20280916 to "כי תצא", 20280930 to "כי תבוא",
-        20281007 to "נצבים", 20281014 to "האזינו", 20281028 to "בראשית",
-        20281104 to "נח", 20281111 to "לך לך", 20281118 to "וירא", 20281125 to "חיי שרה",
-        20281202 to "תולדות", 20281209 to "ויצא", 20281216 to "וישלח", 20281223 to "וישב", 20281230 to "מקץ"
+        20260103 to "para_vayehi", 20260110 to "para_chemot", 20260117 to "para_vaera", 20260124 to "para_bo", 20260131 to "para_bechalah",
+        20260207 to "para_yitro", 20260214 to "para_michpatim", 20260221 to "para_terouma", 20260228 to "para_tetsave",
+        20260307 to "para_ki_tissa", 20260314 to "para_vayakhel", 20260321 to "para_vayikra", 20260328 to "para_tsav",
+        20260411 to "para_chemini", 20260418 to "para_tazria", 20260425 to "para_ahare_mot",
+        20260502 to "para_emor", 20260509 to "para_behar", 20260516 to "para_bamidbar", 20260523 to "para_nasso", 20260530 to "para_behaalotkha",
+        20260606 to "para_chelah_lekha", 20260613 to "para_korah", 20260620 to "para_houkat", 20260627 to "para_balak",
+        20260704 to "para_pinhas", 20260711 to "para_matot", 20260718 to "para_devarim", 20260725 to "para_vaethanan",
+        20260801 to "para_ekev", 20260808 to "para_reeh", 20260815 to "para_choftim", 20260822 to "para_ki_tetse", 20260829 to "para_ki_tavo",
+        20260905 to "para_nitsavim", 20260919 to "para_haazinou",
+        20261010 to "para_bereshit", 20261017 to "para_noach", 20261024 to "para_lekh_lekha", 20261031 to "para_vayera",
+        20261107 to "para_hayei_sarah", 20261114 to "para_toladot", 20261121 to "para_vayetse", 20261128 to "para_vayichlah",
+        20261205 to "para_vayechev", 20261212 to "para_miketz", 20261219 to "para_vayigach", 20261226 to "para_vayehi",
+        20270102 to "para_chemot", 20270109 to "para_vaera", 20270116 to "para_bo", 20270123 to "para_bechalah", 20270130 to "para_yitro",
+        20270206 to "para_michpatim", 20270213 to "para_terouma", 20270220 to "para_tetsave", 20270227 to "para_ki_tissa",
+        20270306 to "para_vayakhel", 20270313 to "para_pekoude", 20270320 to "para_vayikra", 20270327 to "para_tsav",
+        20270403 to "para_chemini", 20270410 to "para_tazria", 20270417 to "para_metsora",
+        20270501 to "para_ahare_mot", 20270508 to "para_kedochim", 20270515 to "para_emor", 20270522 to "para_behar", 20270529 to "para_behoukotai",
+        20270605 to "para_bamidbar", 20270612 to "para_nasso", 20270619 to "para_behaalotkha", 20270626 to "para_chelah_lekha",
+        20270703 to "para_korah", 20270710 to "para_houkat", 20270717 to "para_balak", 20270724 to "para_pinhas", 20270731 to "para_matot",
+        20270807 to "para_massei", 20270814 to "para_devarim", 20270821 to "para_vaethanan", 20270828 to "para_ekev",
+        20270904 to "para_reeh", 20270911 to "para_choftim", 20270918 to "para_ki_tetse", 20270925 to "para_ki_tavo",
+        20271009 to "para_nitsavim", 20271016 to "para_haazinou", 20271030 to "para_bereshit",
+        20271106 to "para_noach", 20271113 to "para_lekh_lekha", 20271120 to "para_vayera", 20271127 to "para_hayei_sarah",
+        20271204 to "para_toladot", 20271211 to "para_vayetse", 20271218 to "para_vayichlah", 20271225 to "para_vayechev",
+        20280101 to "para_miketz", 20280108 to "para_vayigach", 20280115 to "para_vayehi", 20280122 to "para_chemot", 20280129 to "para_vaera",
+        20280205 to "para_bo", 20280212 to "para_bechalah", 20280219 to "para_yitro", 20280226 to "para_michpatim",
+        20280304 to "para_terouma", 20280311 to "para_tetsave", 20280318 to "para_ki_tissa", 20280325 to "para_vayakhel",
+        20280401 to "para_pekoude", 20280408 to "para_vayikra", 20280429 to "para_tsav",
+        20280506 to "para_chemini", 20280513 to "para_tazria", 20280520 to "para_ahare_mot", 20280527 to "para_emor",
+        20280603 to "para_behar", 20280610 to "para_bamidbar", 20280617 to "para_nasso", 20280624 to "para_behaalotkha",
+        20280701 to "para_chelah_lekha", 20280708 to "para_korah", 20280715 to "para_houkat", 20280722 to "para_balak", 20280729 to "para_pinhas",
+        20280805 to "para_matot", 20280812 to "para_devarim", 20280819 to "para_vaethanan", 20280826 to "para_ekev",
+        20280902 to "para_reeh", 20280909 to "para_choftim", 20280916 to "para_ki_tetse", 20280930 to "para_ki_tavo",
+        20281007 to "para_nitsavim", 20281014 to "para_haazinou", 20281028 to "para_bereshit",
+        20281104 to "para_noach", 20281111 to "para_lekh_lekha", 20281118 to "para_vayera", 20281125 to "para_hayei_sarah",
+        20281202 to "para_toladot", 20281209 to "para_vayetse", 20281216 to "para_vayichlah", 20281223 to "para_vayechev", 20281230 to "para_miketz"
     )
 
-    fun parasha(saturday: Calendar): String {
+    fun parasha(ctx: Context, saturday: Calendar): String {
         val key = saturday.get(Calendar.YEAR) * 10000 +
                 (saturday.get(Calendar.MONTH) + 1) * 100 +
                 saturday.get(Calendar.DAY_OF_MONTH)
-        var best = ""
-        for ((k, name) in PARASHOT) {
-            if (k <= key) best = name else break
+        var stringKey = ""
+        for ((k, sk) in PARASHOT) {
+            if (k <= key) stringKey = sk else break
         }
-        return best
+        if (stringKey.isEmpty()) return ""
+        val resId = ctx.resources.getIdentifier(stringKey, "string", ctx.packageName)
+        return if (resId != 0) ctx.getString(resId) else ""
     }
 }

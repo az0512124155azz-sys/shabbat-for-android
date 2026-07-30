@@ -188,70 +188,68 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
 </div>
 <script>
 var CI=[
-  {n:"ירושלים",e:"Jerusalem",f:"Jérusalem",la:31.7683,lo:35.2137,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"תל אביב",e:"Tel Aviv",f:"Tel Aviv",la:32.0853,lo:34.7818,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"חיפה",e:"Haifa",f:"Haïfa",la:32.794,lo:34.9896,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"באר שבע",e:"Beer Sheva",f:"Beer Sheva",la:31.2518,lo:34.7913,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"נתניה",e:"Netanya",f:"Netanya",la:32.3328,lo:34.86,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"רמת גן",e:"Ramat Gan",f:"Ramat Gan",la:32.0684,lo:34.8248,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"פתח תקווה",e:"Petah Tikva",f:"Petah Tikva",la:32.087,lo:34.8878,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"ראשון לציון",e:"Rishon LeZion",f:"Rishon LeTsiyon",la:31.973,lo:34.7925,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"אשדוד",e:"Ashdod",f:"Ashdod",la:31.795,lo:34.65,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"גני תקווה",e:"Ganei Tikva",f:"Guanei Tikva",la:32.0641,lo:34.8808,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"מודיעין",e:"Modi'in",f:"Modi'in",la:31.8969,lo:35.0095,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"אילת",e:"Eilat",f:"Eilat",la:29.5581,lo:34.9482,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"צפת",e:"Tzfat",f:"Tsfat",la:32.9646,lo:35.496,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"טבריה",e:"Tiberias",f:"Tibériade",la:32.794,lo:35.531,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"נצרת",e:"Nazareth",f:"Nazareth",la:32.6996,lo:35.3035,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"בני ברק",e:"Bnei Brak",f:"Bnei Brak",la:32.0833,lo:34.8333,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"הרצליה",e:"Herzliya",f:"Herzliya",la:32.1663,lo:34.8438,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"כפר סבא",e:"Kfar Saba",f:"Kfar Saba",la:32.1789,lo:34.9063,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"רעננה",e:"Ra'anana",f:"Ra'anana",la:32.1836,lo:34.8706,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"בת ים",e:"Bat Yam",f:"Bat Yam",la:32.0204,lo:34.7506,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"ניו יורק",e:"New York",f:"New York",la:40.7128,lo:-74.006,tz:"America/New_York",c:"ארה״ב"},
-  {n:"לוס אנג'לס",e:"Los Angeles",f:"Los Angeles",la:34.0522,lo:-118.2437,tz:"America/Los_Angeles",c:"ארה״ב"},
-  {n:"שיקגו",e:"Chicago",f:"Chicago",la:41.8781,lo:-87.6298,tz:"America/Chicago",c:"ארה״ב"},
-  {n:"מיאמי",e:"Miami",f:"Miami",la:25.7617,lo:-80.1918,tz:"America/New_York",c:"ארה״ב"},
-  {n:"בוסטון",e:"Boston",f:"Boston",la:42.3601,lo:-71.0589,tz:"America/New_York",c:"ארה״ב"},
-  {n:"ברוקלין",e:"Brooklyn",f:"Brooklyn",la:40.6782,lo:-73.9442,tz:"America/New_York",c:"ארה״ב"},
-  {n:"לונדון",e:"London",f:"Londres",la:51.5074,lo:-0.1278,tz:"Europe/London",c:"בריטניה"},
-  {n:"פריז",e:"Paris",f:"Paris",la:48.8566,lo:2.3522,tz:"Europe/Paris",c:"צרפת"},
-  {n:"מרסיי",e:"Marseille",f:"Marseille",la:43.2965,lo:5.3698,tz:"Europe/Paris",c:"צרפת"},
-  {n:"ליון",e:"Lyon",f:"Lyon",la:45.764,lo:4.8357,tz:"Europe/Paris",c:"צרפת"},
-  {n:"ניצה",e:"Nice",f:"Nice",la:43.7102,lo:7.262,tz:"Europe/Paris",c:"צרפת"},
-  {n:"טולוז",e:"Toulouse",f:"Toulouse",la:43.6047,lo:1.4442,tz:"Europe/Paris",c:"צרפת"},
-  {n:"שטרסבורג",e:"Strasbourg",f:"Strasbourg",la:48.5734,lo:7.7521,tz:"Europe/Paris",c:"צרפת"},
-  {n:"בורדו",e:"Bordeaux",f:"Bordeaux",la:44.8378,lo:-0.5792,tz:"Europe/Paris",c:"צרפת"},
-  {n:"סופיה",e:"Sofia",f:"Sofia",la:42.6977,lo:23.3219,tz:"Europe/Sofia",c:"בולגריה"},
-  {n:"פלובדיב",e:"Plovdiv",f:"Plovdiv",la:42.1354,lo:24.7453,tz:"Europe/Sofia",c:"בולגריה"},
-  {n:"ורנה",e:"Varna",f:"Varna",la:43.2141,lo:27.9147,tz:"Europe/Sofia",c:"בולגריה"},
-  {n:"בורגס",e:"Burgas",f:"Burgas",la:42.5048,lo:27.4626,tz:"Europe/Sofia",c:"בולגריה"},
-  {n:"רוסה",e:"Ruse",f:"Roustchouk",la:43.8356,lo:25.9657,tz:"Europe/Sofia",c:"בולגריה"},
-  {n:"ברלין",e:"Berlin",f:"Berlin",la:52.52,lo:13.405,tz:"Europe/Berlin",c:"גרמניה"},
-  {n:"אמסטרדם",e:"Amsterdam",f:"Amsterdam",la:52.3676,lo:4.9041,tz:"Europe/Amsterdam",c:"הולנד"},
-  {n:"רומא",e:"Rome",f:"Rome",la:41.9028,lo:12.4964,tz:"Europe/Rome",c:"איטליה"},
-  {n:"דובאי",e:"Dubai",f:"Dubaï",la:25.2048,lo:55.2708,tz:"Asia/Dubai",c:"איחוד האמירויות"},
-  {n:"טוקיו",e:"Tokyo",f:"Tokyo",la:35.6762,lo:139.6503,tz:"Asia/Tokyo",c:"יפן"},
-  {n:"סידני",e:"Sydney",f:"Sydney",la:-33.8688,lo:151.2093,tz:"Australia/Sydney",c:"אוסטרליה"},
-  {n:"טורונטו",e:"Toronto",f:"Toronto",la:43.6532,lo:-79.3832,tz:"America/Toronto",c:"קנדה"},
-  {n:"בואנוס איירס",e:"Buenos Aires",f:"Buenos Aires",la:-34.6037,lo:-58.3816,tz:"America/Argentina/Buenos_Aires",c:"ארגנטינה"},
-  {n:"בנקוק",e:"Bangkok",f:"Bangkok",la:13.7563,lo:100.5018,tz:"Asia/Bangkok",c:"תאילנד"},
-  {n:"קו סמוי",e:"Koh Samui",f:"Koh Samui",la:8.9545,lo:100.2824,tz:"Asia/Bangkok",c:"תאילנד"},
+  {n:"ירושלים",e:"Jerusalem",la:31.7683,lo:35.2137,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"תל אביב",e:"Tel Aviv",la:32.0853,lo:34.7818,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"חיפה",e:"Haifa",la:32.794,lo:34.9896,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"באר שבע",e:"Beer Sheva",la:31.2518,lo:34.7913,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"נתניה",e:"Netanya",la:32.3328,lo:34.86,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"רמת גן",e:"Ramat Gan",la:32.0684,lo:34.8248,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"פתח תקווה",e:"Petah Tikva",la:32.087,lo:34.8878,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"ראשון לציון",e:"Rishon LeZion",la:31.973,lo:34.7925,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"אשדוד",e:"Ashdod",la:31.795,lo:34.65,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"גני תקווה",e:"Ganei Tikva",la:32.0641,lo:34.8808,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"מודיעין",e:"Modi'in",la:31.8969,lo:35.0095,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"אילת",e:"Eilat",la:29.5581,lo:34.9482,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"צפת",e:"Tzfat",la:32.9646,lo:35.496,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"טבריה",e:"Tiberias",la:32.794,lo:35.531,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"נצרת",e:"Nazareth",la:32.6996,lo:35.3035,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"בני ברק",e:"Bnei Brak",la:32.0833,lo:34.8333,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"הרצליה",e:"Herzliya",la:32.1663,lo:34.8438,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"כפר סבא",e:"Kfar Saba",la:32.1789,lo:34.9063,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"רעננה",e:"Ra'anana",la:32.1836,lo:34.8706,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"בת ים",e:"Bat Yam",la:32.0204,lo:34.7506,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"ניו יורק",e:"New York",la:40.7128,lo:-74.006,tz:"America/New_York",c:"ארה״ב"},
+  {n:"לוס אנג'לס",e:"Los Angeles",la:34.0522,lo:-118.2437,tz:"America/Los_Angeles",c:"ארה״ב"},
+  {n:"שיקגו",e:"Chicago",la:41.8781,lo:-87.6298,tz:"America/Chicago",c:"ארה״ב"},
+  {n:"מיאמי",e:"Miami",la:25.7617,lo:-80.1918,tz:"America/New_York",c:"ארה״ב"},
+  {n:"בוסטון",e:"Boston",la:42.3601,lo:-71.0589,tz:"America/New_York",c:"ארה״ב"},
+  {n:"ברוקלין",e:"Brooklyn",la:40.6782,lo:-73.9442,tz:"America/New_York",c:"ארה״ב"},
+  {n:"לונדון",e:"London",la:51.5074,lo:-0.1278,tz:"Europe/London",c:"בריטניה"},
+  {n:"פריז",e:"Paris",la:48.8566,lo:2.3522,tz:"Europe/Paris",c:"צרפת"},
+  {n:"מרסיי",e:"Marseille",la:43.2965,lo:5.3698,tz:"Europe/Paris",c:"צרפת"},
+  {n:"ליון",e:"Lyon",la:45.764,lo:4.8357,tz:"Europe/Paris",c:"צרפת"},
+  {n:"ניצה",e:"Nice",la:43.7102,lo:7.262,tz:"Europe/Paris",c:"צרפת"},
+  {n:"טולוז",e:"Toulouse",la:43.6047,lo:1.4442,tz:"Europe/Paris",c:"צרפת"},
+  {n:"שטרסבורג",e:"Strasbourg",la:48.5734,lo:7.7521,tz:"Europe/Paris",c:"צרפת"},
+  {n:"בורדו",e:"Bordeaux",la:44.8378,lo:-0.5792,tz:"Europe/Paris",c:"צרפת"},
+  {n:"סופיה",e:"Sofia",la:42.6977,lo:23.3219,tz:"Europe/Sofia",c:"בולגריה"},
+  {n:"פלובדיב",e:"Plovdiv",la:42.1354,lo:24.7453,tz:"Europe/Sofia",c:"בולגריה"},
+  {n:"ורנה",e:"Varna",la:43.2141,lo:27.9147,tz:"Europe/Sofia",c:"בולגריה"},
+  {n:"בורגס",e:"Burgas",la:42.5048,lo:27.4626,tz:"Europe/Sofia",c:"בולגריה"},
+  {n:"רוסה",e:"Ruse",la:43.8356,lo:25.9657,tz:"Europe/Sofia",c:"בולגריה"},
+  {n:"ברלין",e:"Berlin",la:52.52,lo:13.405,tz:"Europe/Berlin",c:"גרמניה"},
+  {n:"אמסטרדם",e:"Amsterdam",la:52.3676,lo:4.9041,tz:"Europe/Amsterdam",c:"הולנד"},
+  {n:"רומא",e:"Rome",la:41.9028,lo:12.4964,tz:"Europe/Rome",c:"איטליה"},
+  {n:"דובאי",e:"Dubai",la:25.2048,lo:55.2708,tz:"Asia/Dubai",c:"איחוד האמירויות"},
+  {n:"טוקיו",e:"Tokyo",la:35.6762,lo:139.6503,tz:"Asia/Tokyo",c:"יפן"},
+  {n:"סידני",e:"Sydney",la:-33.8688,lo:151.2093,tz:"Australia/Sydney",c:"אוסטרליה"},
+  {n:"טורונטו",e:"Toronto",la:43.6532,lo:-79.3832,tz:"America/Toronto",c:"קנדה"},
+  {n:"בואנוס איירס",e:"Buenos Aires",la:-34.6037,lo:-58.3816,tz:"America/Argentina/Buenos_Aires",c:"ארגנטינה"},
+  {n:"בנקוק",e:"Bangkok",la:13.7563,lo:100.5018,tz:"Asia/Bangkok",c:"תאילנד"},
+  {n:"קו סמוי",e:"Koh Samui",la:8.9545,lo:100.2824,tz:"Asia/Bangkok",c:"תאילנד"},
 ];
 
-// ── Language (Hebrew / English / French, auto by device locale) ──────────────
-var LANG=(function(){var l=(navigator.language||navigator.userLanguage||'he').toLowerCase();if(l.indexOf('he')===0)return'he';if(l.indexOf('fr')===0)return'fr';return'en';})();
-var FMT_LOCALE=(LANG==='he')?'he-IL':(LANG==='fr')?'fr-FR':(navigator.language||'en-US');
+// ── Language (Hebrew / English, auto by device locale) ────────────────────────
+var LANG=((navigator.language||navigator.userLanguage||'he').toLowerCase().indexOf('he')===0)?'he':'en';
+var FMT_LOCALE=(LANG==='he')?'he-IL':(navigator.language||'en-US');
 var T={
  he:{tagline:"זמני שבת וחגים מדויקים",searchCity:"חפש עיר...",sunrise:"נץ החמה",nightfall:"צאת הכוכבים",omerCount:"ספירת העומר",omerSoon:"⏳ הספירה תתחיל עם צאת הכוכבים",weeklyParasha:"פרשת השבוע",tefillinToday:"הנחת תפילין היום",enterCity:"הזן שם עיר למעלה כדי להתחיל",support:"תמיכה טכנית:",upcomingShabbat:"שבת הקרובה",entry:"כניסה",exit:"יציאה",friday:"יום שישי",motzaeiShabbat:"מוצאי שבת",holidayInSub:"כניסת החג",holidayOutSub:"צאת החג",fastBegin:"תחילת הצום",fastEnd:"סיום הצום",fastNight:"ליל הצום",fastDawn:"עלות השחר",fastStars:"צאת הכוכבים",tefOn:"✅ הונחו תפילין היום",tefOff:"☐ לא הונחו עדיין",notifOn:"✅ ההתראה הופעלה",notifOff:"🔔 הפעל התראה 3 שעות לפני שבת",openChrome:"פתח ב-Chrome לקבלת התראות",notifDenied:"חסמת התראות. שנה בהגדרות הדפדפן.",notifPerm:"כדי לקבל התראות, אשר לאפליקציה הרשאת התראות בהגדרות הטלפון.",notifNo:"לא אושרו התראות.",fastPrefix:"צום "},
- en:{tagline:"Accurate Shabbat & holiday times",searchCity:"Search city...",sunrise:"Sunrise",nightfall:"Nightfall",omerCount:"Omer Count",omerSoon:"⏳ Counting begins at nightfall",weeklyParasha:"Weekly Parasha",tefillinToday:"Tefillin today",enterCity:"Enter a city above to begin",support:"Support:",upcomingShabbat:"Upcoming Shabbat",entry:"Entry",exit:"Exit",friday:"Friday",motzaeiShabbat:"Shabbat ends",holidayInSub:"Holiday begins",holidayOutSub:"Holiday ends",fastBegin:"Fast begins",fastEnd:"Fast ends",fastNight:"Eve of fast",fastDawn:"Dawn",fastStars:"Nightfall",tefOn:"✅ Tefillin done today",tefOff:"☐ Not yet",notifOn:"✅ Notifications enabled",notifOff:"🔔 Notify 3 hours before Shabbat",openChrome:"Open in Chrome for notifications",notifDenied:"Notifications blocked. Change in browser settings.",notifPerm:"To get notifications, allow notification permission in phone settings.",notifNo:"Notifications not allowed.",fastPrefix:"Fast of "},
- fr:{tagline:"Heures précises de Chabbat et des fêtes",searchCity:"Rechercher une ville...",sunrise:"Lever du jour",nightfall:"Sortie des étoiles",omerCount:"Compte du Omer",omerSoon:"⏳ Le compte commence à la sortie des étoiles",weeklyParasha:"Sidra de la semaine",tefillinToday:"Tu as mis les téfilines aujourd'hui ?",enterCity:"Entrez le nom d'une ville ci-dessus pour commencer",support:"Support technique :",upcomingShabbat:"Chabbat prochain",entry:"Entrée",exit:"Sortie",friday:"Vendredi",motzaeiShabbat:"Samedi soir",holidayInSub:"Entrée de la fête",holidayOutSub:"Sortie de la fête",fastBegin:"Début du jeûne",fastEnd:"Fin du jeûne",fastNight:"Veille du jeûne",fastDawn:"Lever du jour",fastStars:"Sortie des étoiles",tefOn:"✅ Téfilines posées aujourd'hui",tefOff:"☐ Pas encore",notifOn:"✅ Notification activée",notifOff:"🔔 Activer la notification 3 heures avant Chabbat",openChrome:"Ouvre Chrome pour recevoir les notifications",notifDenied:"Notifications bloquées. Modifie-le dans les paramètres du navigateur.",notifPerm:"Pour recevoir des notifications, autorise l'application dans les paramètres du téléphone.",notifNo:"Notifications non autorisées.",fastPrefix:"Jeûne du "}
+ en:{tagline:"Accurate Shabbat & holiday times",searchCity:"Search city...",sunrise:"Sunrise",nightfall:"Nightfall",omerCount:"Omer Count",omerSoon:"⏳ Counting begins at nightfall",weeklyParasha:"Weekly Parasha",tefillinToday:"Tefillin today",enterCity:"Enter a city above to begin",support:"Support:",upcomingShabbat:"Upcoming Shabbat",entry:"Entry",exit:"Exit",friday:"Friday",motzaeiShabbat:"Shabbat ends",holidayInSub:"Holiday begins",holidayOutSub:"Holiday ends",fastBegin:"Fast begins",fastEnd:"Fast ends",fastNight:"Eve of fast",fastDawn:"Dawn",fastStars:"Nightfall",tefOn:"✅ Tefillin done today",tefOff:"☐ Not yet",notifOn:"✅ Notifications enabled",notifOff:"🔔 Notify 3 hours before Shabbat",openChrome:"Open in Chrome for notifications",notifDenied:"Notifications blocked. Change in browser settings.",notifPerm:"To get notifications, allow notification permission in phone settings.",notifNo:"Notifications not allowed.",fastPrefix:"Fast of "}
 };
 function t(k){return (T[LANG]&&T[LANG][k]!=null)?T[LANG][k]:(T.he[k]!=null?T.he[k]:k);}
 var COUNTRY_EN={"ישראל":"Israel","ארה״ב":"USA","בריטניה":"UK","צרפת":"France","גרמניה":"Germany","הולנד":"Netherlands","איטליה":"Italy","איחוד האמירויות":"UAE","יפן":"Japan","אוסטרליה":"Australia","קנדה":"Canada","ארגנטינה":"Argentina","בולגריה":"Bulgaria","תאילנד":"Thailand"};
-var COUNTRY_FR={"ישראל":"Israël","ארה״ב":"É.-U.","בריטניה":"Royaume-Uni","צרפת":"France","גרמניה":"Allemagne","הולנד":"Pays-Bas","איטליה":"Italie","איחוד האמירויות":"É.A.U.","יפן":"Japon","אוסטרליה":"Australie","קנדה":"Canada","ארגנטינה":"Argentine","בולגריה":"Bulgarie","תאילנד":"Thaïlande"};
-function cityName(c){return LANG==='he'?c.n:(LANG==='fr'?(c.f||c.e||c.n):(c.e||c.n));}
-function cityCountry(c){return LANG==='he'?c.c:(LANG==='fr'?(COUNTRY_FR[c.c]||c.c):(COUNTRY_EN[c.c]||c.c));}
+function cityName(c){return LANG==='he'?c.n:(c.e||c.n);}
+function cityCountry(c){return LANG==='he'?c.c:(COUNTRY_EN[c.c]||c.c);}
 function cityLabel(c){return cityName(c)+(c.c!=="ישראל"?" – "+cityCountry(c):"");}
 function applyLang(){
  try{document.documentElement.setAttribute('dir',LANG==='he'?'rtl':'ltr');document.documentElement.setAttribute('lang',LANG);}catch(e){}

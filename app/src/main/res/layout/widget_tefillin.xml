@@ -6,27 +6,35 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@drawable/widget_bg"
-    android:layoutDirection="rtl"
-    android:padding="10dp">
+    android:layoutDirection="locale"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/wTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
         android:text="@string/widget_title_tefillin"
         android:textSize="12sp"
         android:textColor="#7A8A9E"
-        android:layout_marginBottom="6dp"/>
+        android:maxLines="1"
+        android:ellipsize="end" />
 
     <TextView
         android:id="@+id/wTefBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1.8"
         android:gravity="center"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:textSize="15sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
-        android:background="@drawable/widget_btn_off"/>
+        android:background="@drawable/widget_btn_off"
+        android:maxLines="1"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeMaxTextSize="15sp" />
 </LinearLayout>

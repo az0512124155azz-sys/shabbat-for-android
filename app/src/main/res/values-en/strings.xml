@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">shabbat</string>
+
+    <!-- Interface & General -->
+    <string name="shabbat_shalom">Shabbat Shalom</string>
+    <string name="tagline">Accurate Shabbat &amp; holiday times</string>
+    <string name="search_city">Search city...</string>
+    <string name="enter_city_instruction">Enter a city above to begin</string>
+    <string name="technical_support">Support</string>
+    <string name="upcoming_shabbat">Upcoming Shabbat</string>
+    <string name="friday">Friday</string>
+    <string name="samedi_soir">Shabbat ends</string>
+    <string name="notification_off">Notify 3 hours before Shabbat</string>
+    <string name="notification_on">Notifications enabled</string>
+
+    <!-- Widget descriptions -->
+    <string name="widget_desc_shabbat">Shabbat entry and exit times</string>
+    <string name="widget_desc_netz">Sunrise time today</string>
+    <string name="widget_desc_tzeit">Nightfall time today</string>
+    <string name="widget_desc_sun">Sunrise and nightfall times</string>
+    <string name="widget_desc_parasha">Weekly Torah portion</string>
+    <string name="widget_desc_tefillin">Daily tefillin tracking</string>
+
+    <!-- Widget labels -->
+    <string name="widget_label_shabbat">🕯️ Shabbat</string>
+    <string name="widget_label_sunrise">🌅 Sunrise</string>
+    <string name="widget_label_nightfall">✨ Nightfall</string>
+    <string name="widget_label_sun_times">☀️ Today\'s times</string>
+    <string name="widget_label_candle">Entry</string>
+    <string name="widget_label_havdalah">Exit</string>
+    <string name="widget_label_parasha">Weekly Parasha</string>
+    <string name="widget_title_parasha">📖 Weekly Parasha</string>
+    <string name="widget_title_tefillin">👉 Tefillin Today</string>
+
+    <!-- Tefillin button states -->
+    <string name="tefillin_on">✅ Tefillin done</string>
+    <string name="tefillin_off">☐ Not yet</string>
+
+    <!-- Fêtes (Holidays) -->
+    <string name="holiday_rosh_hashana">Rosh Hashana</string>
+    <string name="holiday_yom_kippur">Yom Kippur</string>
+    <string name="holiday_souccot">Sukkot</string>
+    <string name="holiday_shemini_atzeret">Shemini Atzeret</string>
+    <string name="holiday_pesach">Passover</string>
+    <string name="holiday_shavuot">Shavuot</string>
+    <string name="fast_guedalia">Fast of Gedaliah</string>
+    <string name="fast_10_tevet">10th of Tevet</string>
+    <string name="fast_esther">Fast of Esther</string>
+    <string name="fast_17_tamouz">17th of Tammuz</string>
+    <string name="fast_9_av">Tisha B\'Av</string>
+    <string name="holiday_hanoukka">Hanukkah</string>
+    <string name="holiday_pourim">Purim</string>
+
+    <!-- Sidra (Torah Portions) -->
+    <string name="para_bereshit">Bereshit</string>
+    <string name="para_noach">Noach</string>
+    <string name="para_lekh_lekha">Lech-Lecha</string>
+    <string name="para_vayera">Vayera</string>
+    <string name="para_hayei_sarah">Chayei Sarah</string>
+    <string name="para_toladot">Toledot</string>
+    <string name="para_vayetse">Vayetzei</string>
+    <string name="para_vayichlah">Vayishlach</string>
+    <string name="para_vayechev">Vayeshev</string>
+    <string name="para_miketz">Miketz</string>
+    <string name="para_vayigach">Vayigash</string>
+    <string name="para_vayehi">Vayechi</string>
+    <string name="para_chemot">Shemot</string>
+    <string name="para_vaera">Va\'era</string>
+    <string name="para_bo">Bo</string>
+    <string name="para_bechalah">Beshalach</string>
+    <string name="para_yitro">Yitro</string>
+    <string name="para_michpatim">Mishpatim</string>
+    <string name="para_terouma">Terumah</string>
+    <string name="para_tetsave">Tetzaveh</string>
+    <string name="para_ki_tissa">Ki Tisa</string>
+    <string name="para_vayakhel">Vayakhel</string>
+    <string name="para_pekoude">Pekudei</string>
+    <string name="para_vayikra">Vayikra</string>
+    <string name="para_tsav">Tzav</string>
+    <string name="para_chemini">Shemini</string>
+    <string name="para_tazria">Tazria</string>
+    <string name="para_metsora">Metzora</string>
+    <string name="para_ahare_mot">Acharei Mot</string>
+    <string name="para_kedochim">Kedoshim</string>
+    <string name="para_emor">Emor</string>
+    <string name="para_behar">Behar</string>
+    <string name="para_behoukotai">Bechukotai</string>
+    <string name="para_bamidbar">Bamidbar</string>
+    <string name="para_nasso">Naso</string>
+    <string name="para_behaalotkha">Beha\'alotcha</string>
+    <string name="para_chelah_lekha">Sh\'lach</string>
+    <string name="para_korah">Korach</string>
+    <string name="para_houkat">Chukat</string>
+    <string name="para_balak">Balak</string>
+    <string name="para_pinhas">Pinchas</string>
+    <string name="para_matot">Matot</string>
+    <string name="para_massei">Masei</string>
+    <string name="para_devarim">Devarim</string>
+    <string name="para_vaethanan">Va\'etchanan</string>
+    <string name="para_ekev">Eikev</string>
+    <string name="para_reeh">Re\'eh</string>
+    <string name="para_choftim">Shoftim</string>
+    <string name="para_ki_tetse">Ki Teitzei</string>
+    <string name="para_ki_tavo">Ki Tavo</string>
+    <string name="para_nitsavim">Nitzavim</string>
+    <string name="para_vayelekh">Vayeilech</string>
+    <string name="para_haazinou">Ha\'azinu</string>
+    <string name="para_vezot_haberakha">Vezot Haberakha</string>
+
+    <!-- Villes (Cities) -->
+    <string name="city_jerusalem">Jerusalem</string>
+    <string name="city_tel_aviv">Tel Aviv</string>
+    <string name="city_haifa">Haifa</string>
+    <string name="city_beer_sheva">Beer Sheva</string>
+    <string name="city_netanya">Netanya</string>
+    <string name="city_ramat_gan">Ramat Gan</string>
+    <string name="city_petah_tikva">Petah Tikva</string>
+    <string name="city_rishon_letsiyon">Rishon LeZion</string>
+    <string name="city_ashdod">Ashdod</string>
+    <string name="city_ganei_tikva">Ganei Tikva</string>
+    <string name="city_modiin">Modi\'in</string>
+    <string name="city_eilat">Eilat</string>
+    <string name="city_safed">Safed</string>
+    <string name="city_tiberiade">Tiberias</string>
+    <string name="city_nazareth">Nazareth</string>
+    <string name="city_bnei_brak">Bnei Brak</string>
+    <string name="city_herzliya">Herzliya</string>
+    <string name="city_kfar_saba">Kfar Saba</string>
+    <string name="city_raanana">Ra\'anana</string>
+    <string name="city_bat_yam">Bat Yam</string>
+    <string name="city_new_york">New York</string>
+    <string name="city_los_angeles">Los Angeles</string>
+    <string name="city_chicago">Chicago</string>
+    <string name="city_miami">Miami</string>
+    <string name="city_boston">Boston</string>
+    <string name="city_brooklyn">Brooklyn</string>
+    <string name="city_londres">London</string>
+    <string name="city_paris">Paris</string>
+    <string name="city_marseille">Marseille</string>
+    <string name="city_lyon">Lyon</string>
+    <string name="city_nice">Nice</string>
+    <string name="city_toulouse">Toulouse</string>
+    <string name="city_strasbourg">Strasbourg</string>
+    <string name="city_bordeaux">Bordeaux</string>
+    <string name="city_sofia">Sofia</string>
+    <string name="city_plovdiv">Plovdiv</string>
+    <string name="city_varna">Varna</string>
+    <string name="city_burgas">Burgas</string>
+    <string name="city_roustchouk">Ruse</string>
+    <string name="city_berlin">Berlin</string>
+    <string name="city_amsterdam">Amsterdam</string>
+    <string name="city_rome">Rome</string>
+    <string name="city_dubai">Dubai</string>
+    <string name="city_tokyo">Tokyo</string>
+    <string name="city_sydney">Sydney</string>
+    <string name="city_toronto">Toronto</string>
+    <string name="city_buenos_aires">Buenos Aires</string>
+    <string name="city_bangkok">Bangkok</string>
+    <string name="city_koh_samui">Koh Samui</string>
+</resources>
