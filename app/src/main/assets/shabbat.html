@@ -181,7 +181,7 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
     </div>
     <div class="empty-foot">
       <div style="font-size:13px;color:rgba(255,255,255,0.22);margin-bottom:8px">Made by Avishai Tzabary</div>
-      <div style="font-size:13px;color:#6a7a90">תמיכה טכנית: <a href="mailto:shabbatsupport@gmail.com" style="color:#93c5fd;text-decoration:none;font-weight:600">shabbatsupport@gmail.com</a></div>
+      <div style="font-size:13px;color:#6a7a90"><span data-i18n="support">תמיכה טכנית:</span> <a href="mailto:shabbatsupport@gmail.com" style="color:#93c5fd;text-decoration:none;font-weight:600">shabbatsupport@gmail.com</a></div>
     </div>
   </div>
 
@@ -490,7 +490,7 @@ document.getElementById("inp").addEventListener("input",function(){
   var q=this.value.trim(),ul=document.getElementById("sdrop");
   if(!q){ul.className="sdrop";ul.innerHTML="";return;}
   if(q.indexOf("תמיכה")>=0||q.indexOf("טמיכה")>=0){
-    ul.innerHTML='<li style="justify-content:center;text-align:center;flex-direction:column;gap:4px"><div style="font-size:13px;color:#94a3b8">תמיכה טכנית</div><a href="mailto:shabbatsupport@gmail.com" style="color:#93c5fd;font-size:16px;font-weight:700;text-decoration:none">shabbatsupport@gmail.com</a></li>';
+    ul.innerHTML='<li style="justify-content:center;text-align:center;flex-direction:column;gap:4px"><div style="font-size:13px;color:#94a3b8">'+t("support")+'</div><a href="mailto:shabbatsupport@gmail.com" style="color:#93c5fd;font-size:16px;font-weight:700;text-decoration:none">shabbatsupport@gmail.com</a></li>';
     ul.className="sdrop open";return;
   }
   var low=q.toLowerCase();
