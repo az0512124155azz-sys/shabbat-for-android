@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var webView: WebView
     private val notifRequestCode = 7001
+    private val locationRequestCode = 7002
+    private var pendingGeoOrigin: String? = null
+    private var pendingGeoCallback: GeolocationPermissions.Callback? = null
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +55,19 @@ class MainActivity : AppCompatActivity() {
             override fun onGeolocationPermissionsShowPrompt(
                 origin: String,
                 callback: GeolocationPermissions.Callback
-            ) { callback.invoke(origin, true, false) }
+            ) {
+                if (locationPermitted()) {
+                    callback.invoke(origin, true, false)
+                } else {
+                    pendingGeoOrigin = origin
+                    pendingGeoCallback = callback
+                    ActivityCompat.requestPermissions(
+                        this@MainActivity,
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                        locationRequestCode
+                    )
+                }
+            }
         }
 
         webView.webViewClient = object : WebViewClient() {
@@ -132,6 +147,12 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED
 
+    private fun locationPermitted(): Boolean =
+        ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED
+
     private fun requestNotifFlow() {
         if (!notificationsPermitted()) {
             ActivityCompat.requestPermissions(
@@ -158,6 +179,12 @@ class MainActivity : AppCompatActivity() {
             } else {
                 webView.evaluateJavascript("window.nativeNotifResult&&nativeNotifResult(false)", null)
             }
+        } else if (requestCode == locationRequestCode) {
+            val granted = grantResults.isNotEmpty() &&
+                    grantResults.any { it == PackageManager.PERMISSION_GRANTED }
+            pendingGeoCallback?.invoke(pendingGeoOrigin, granted, false)
+            pendingGeoOrigin = null
+            pendingGeoCallback = null
         }
     }
 

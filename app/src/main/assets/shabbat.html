@@ -108,6 +108,7 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
     <div class="sb">
       <span style="font-size:20px;flex-shrink:0">📍</span>
       <input id="inp" type="text" data-i18n-ph="searchCity" placeholder="חפש עיר..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <span id="gpsBtn" style="font-size:19px;flex-shrink:0;cursor:pointer;padding:2px 4px;opacity:0.75" title="מיקום נוכחי">🎯</span>
     </div>
     <ul class="sdrop" id="sdrop"></ul>
   </div>
@@ -516,12 +517,40 @@ document.getElementById("inp").addEventListener("input",function(){
 document.addEventListener("click",function(e){if(!e.target.closest("#sw"))document.getElementById("sdrop").className="sdrop";});
 
 function pick(i){
-  city=LR[i];localStorage.setItem("lastCity",JSON.stringify(city));
+  selectCity(LR[i]);
+}
+function selectCity(c){
+  city=c;localStorage.setItem("lastCity",JSON.stringify(city));
   document.getElementById("inp").value=cityLabel(city);
   document.getElementById("sdrop").className="sdrop";
   if(NATIVE)NATIVE.city(city);
   render();schedNext();
 }
+function haversineKm(la1,lo1,la2,lo2){
+  var R=6371,dLa=(la2-la1)*Math.PI/180,dLo=(lo2-lo1)*Math.PI/180;
+  var a=Math.sin(dLa/2)*Math.sin(dLa/2)+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dLo/2)*Math.sin(dLo/2);
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+function nearestCity(la,lo){
+  var best=null,bestD=Infinity;
+  for(var i=0;i<CI.length;i++){
+    var d=haversineKm(la,lo,CI[i].la,CI[i].lo);
+    if(d<bestD){bestD=d;best=CI[i];}
+  }
+  return{city:best,km:bestD};
+}
+document.getElementById("gpsBtn").addEventListener("click",function(){
+  var btn=this;
+  if(!navigator.geolocation){return;}
+  btn.style.opacity="1";btn.textContent="⏳";
+  navigator.geolocation.getCurrentPosition(function(pos){
+    var r=nearestCity(pos.coords.latitude,pos.coords.longitude);
+    btn.textContent="🎯";btn.style.opacity="0.75";
+    if(r.city)selectCity(r.city);
+  },function(err){
+    btn.textContent="🎯";btn.style.opacity="0.75";
+  },{enableHighAccuracy:false,timeout:15000,maximumAge:600000});
+});
 
 function render(){
   if(!city)return;
