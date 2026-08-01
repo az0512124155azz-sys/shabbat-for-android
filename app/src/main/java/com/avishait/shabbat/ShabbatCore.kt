@@ -121,10 +121,15 @@ object ShabbatCore {
     fun sunrise(c: City, day: Calendar): Date? = sol(c.lat, c.lon, day, true, 90.833)
     fun sunset(c: City, day: Calendar): Date? = sol(c.lat, c.lon, day, false, 90.833)
     fun tzeit(c: City, day: Calendar): Date? = sol(c.lat, c.lon, day, false, 96.0)
+    private fun candleOffsetMinutes(c: City): Long = when (c.name) {
+        "ירושלים" -> 40L
+        "חיפה" -> 30L
+        else -> 18L
+    }
     fun candle(c: City, friday: Calendar): Date? =
-        sunset(c, friday)?.let { Date(it.time - 18 * 60000L) }
-    fun havdalah(c: City, saturday: Calendar): Date? =
-        sunset(c, saturday)?.let { Date(it.time + 42 * 60000L) }
+        sunset(c, friday)?.let { Date(it.time - candleOffsetMinutes(c) * 60000L) }
+    // Havdalah = sun 8.5° below horizon ("3 small stars" – matches Hebcal's default motzaei-Shabbat calculation)
+    fun havdalah(c: City, saturday: Calendar): Date? = sol(c.lat, c.lon, saturday, false, 98.5)
 
     fun todayNoon(now: Date = Date()): Calendar {
         val c = Calendar.getInstance()
