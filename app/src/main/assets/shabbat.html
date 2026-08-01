@@ -569,7 +569,7 @@ function render(){
   }
 
   document.getElementById("evTitle").textContent=showTitle;
-  document.getElementById("evDate").textContent=show.entry?show.entry.toLocaleDateString("he-IL",{day:"numeric",month:"long",year:"numeric",timeZone:tz}):"";
+  document.getElementById("evDate").textContent=show.entry?show.entry.toLocaleDateString(FMT_LOCALE,{day:"numeric",month:"long",year:"numeric",timeZone:tz}):"";
   document.getElementById("iconCandle").textContent=show.icoIn;
   document.getElementById("lblCandle").textContent=show.lblIn;
   document.getElementById("tCandle").textContent=ft(show.entry,tz);

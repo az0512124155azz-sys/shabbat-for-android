@@ -43,7 +43,7 @@ object NotificationScheduler {
                 label = ShabbatCore.fmt(ctx, c, city.tz)
             } else {
                 val h = st.havdalah ?: continue
-                target = h            // fire exactly at havdalah (Shabbat exit) — no lag
+                target = Date(h.time + 10L * 60000L)   // 10 minutes after Shabbat exit
                 label = ""
             }
             if (target.time > now.time + 60000L) {
