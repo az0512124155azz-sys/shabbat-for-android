@@ -592,6 +592,30 @@ function hebcalLookup(la,lo,cb){
   setTimeout(function(){if(!done){delete window[cbName];if(script.parentNode)script.parentNode.removeChild(script);cb(null);}},10000);
   document.body.appendChild(script);
 }
+var hebcalOverlaySeq=0;
+function overlayHebcalShabbatTimes(la,lo,tz,fri,sat){
+  var mySeq=++hebcalOverlaySeq;
+  hebcalLookup(la,lo,function(data){
+    if(mySeq!==hebcalOverlaySeq||!data||!data.items)return; // superseded or failed — keep local calc
+    var candleD=null,havdD=null;
+    for(var i=0;i<data.items.length;i++){
+      var it=data.items[i];
+      if(!it.date)continue;
+      var d=new Date(it.date);
+      if(it.category==="candles"&&sameLocalDay(d,fri,tz))candleD=d;
+      if(it.category==="havdalah"&&sameLocalDay(d,sat,tz))havdD=d;
+    }
+    if(candleD)document.getElementById("tCandle").textContent=ft(candleD,tz);
+    if(havdD)document.getElementById("tHav").textContent=ft(havdD,tz);
+  });
+}
+function sameLocalDay(d,ref,tz){
+  try{
+    var a=d.toLocaleDateString("en-CA",{timeZone:tz});
+    var b=ref.toLocaleDateString("en-CA",{timeZone:tz});
+    return a===b;
+  }catch(e){return true;}
+}
 function gpsApply(la,lo){
   var r=nearestCity(la,lo);
   if(r.city&&r.km<=70){gpsDone();selectCity(r.city);return;}
@@ -679,6 +703,7 @@ function render(){
   document.getElementById("lblHav").textContent=show.lblOut;
   document.getElementById("tHav").textContent=ft(show.exit,tz);
   document.getElementById("subHav").textContent=show.subOut;
+  if(show===shab)overlayHebcalShabbatTimes(la,lo,tz,fri,sat);
 
   var para=getPara(sat);
   var pc=document.getElementById("paraCard");
