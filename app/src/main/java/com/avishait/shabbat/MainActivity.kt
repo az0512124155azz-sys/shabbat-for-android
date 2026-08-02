@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity() {
             domStorageEnabled = true
             allowFileAccess = true
             allowContentAccess = true
+            allowUniversalAccessFromFileURLs = true
+            allowFileAccessFromFileURLs = true
             setSupportZoom(false)
             displayZoomControls = false
             builtInZoomControls = false
