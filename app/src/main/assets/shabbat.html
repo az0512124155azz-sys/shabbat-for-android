@@ -93,6 +93,30 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
 .footer-support a{color:#93c5fd;text-decoration:none;font-weight:600}
 
 .hidden{display:none!important}
+
+/* Liquid Glass (iOS only) — richer blur/saturation, top highlight, brighter edges */
+.ios-glass .sb,
+.ios-glass .sdrop,
+.ios-glass .sun-c,
+.ios-glass .shab,
+.ios-glass .omer,
+.ios-glass .para,
+.ios-glass .tef,
+.ios-glass #notifBtn{
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  border-color:rgba(255,255,255,0.22);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.35),inset 0 0 0 1px rgba(255,255,255,0.04),0 8px 32px rgba(0,0,0,0.25);
+}
+.ios-glass .sb{border-radius:20px}
+.ios-glass .sdrop{border-radius:18px}
+.ios-glass .sun-c{border-radius:20px}
+.ios-glass .shab{border-radius:26px}
+.ios-glass .omer{border-radius:20px}
+.ios-glass .para{border-radius:20px}
+.ios-glass .tef{border-radius:22px}
+.ios-glass #notifBtn{border-radius:20px}
+.ios-glass #tefBtn{border-radius:16px}
 </style>
 </head>
 <body>
@@ -488,6 +512,8 @@ var NATIVE=(function(){
   }
   return null;
 })();
+var IS_IOS=!!(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.shabbat);
+if(IS_IOS)document.body.classList.add("ios-glass");
 var nativeNotifOn=false;
 window.nativeNotifResult=function(ok){
   nativeNotifOn=!!ok;
