@@ -108,7 +108,7 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
     <div class="sb">
       <span style="font-size:20px;flex-shrink:0">📍</span>
       <input id="inp" type="text" data-i18n-ph="searchCity" placeholder="חפש עיר..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <span id="gpsBtn" style="font-size:19px;flex-shrink:0;cursor:pointer;padding:2px 4px;opacity:0.75" title="מיקום נוכחי">🎯</span>
+      <span id="gpsBtn" style="font-size:19px;flex-shrink:0;cursor:pointer;padding:2px 4px;opacity:0.75;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent" title="מיקום נוכחי">🎯</span>
     </div>
     <ul class="sdrop" id="sdrop"></ul>
   </div>
@@ -502,8 +502,11 @@ window.nativeInit=function(st){
   }catch(e){}
 };
 
+var extSearchTimer=null,extSearchSeq=0;
 document.getElementById("inp").addEventListener("input",function(){
   var q=this.value.trim(),ul=document.getElementById("sdrop");
+  if(extSearchTimer){clearTimeout(extSearchTimer);extSearchTimer=null;}
+  extSearchSeq++;
   if(!q){ul.className="sdrop";ul.innerHTML="";return;}
   if(q.indexOf("תמיכה")>=0||q.indexOf("טמיכה")>=0){
     ul.innerHTML='<li style="justify-content:center;text-align:center;flex-direction:column;gap:4px"><div style="font-size:13px;color:#94a3b8">'+t("support")+'</div><a href="mailto:shabbatsupport@gmail.com" style="color:#93c5fd;font-size:16px;font-weight:700;text-decoration:none">shabbatsupport@gmail.com</a></li>';
@@ -511,10 +514,37 @@ document.getElementById("inp").addEventListener("input",function(){
   }
   var low=q.toLowerCase();
   LR=CI.filter(function(c){return c.n.indexOf(q)>=0||c.e.toLowerCase().indexOf(low)>=0;}).slice(0,6);
-  if(!LR.length){ul.className="sdrop";return;}
-  ul.innerHTML=LR.map(function(_,i){return'<li ontouchend="pick('+i+')" onmousedown="pick('+i+')"><span>'+cityName(LR[i])+'</span><span class="sdrop-c">'+cityCountry(LR[i])+'</span></li>';}).join("");
-  ul.className="sdrop open";
+  if(LR.length){
+    ul.innerHTML=LR.map(function(_,i){return'<li ontouchend="pick('+i+')" onmousedown="pick('+i+')"><span>'+cityName(LR[i])+'</span><span class="sdrop-c">'+cityCountry(LR[i])+'</span></li>';}).join("");
+    ul.className="sdrop open";
+    return;
+  }
+  ul.className="sdrop";
+  if(q.length<2)return;
+  var mySeq=extSearchSeq;
+  extSearchTimer=setTimeout(function(){extCitySearch(q,mySeq);},400);
 });
+var EXR=[]; // external (countries.dev) search results, for pickExt(i)
+function extCitySearch(q,mySeq){
+  var url="https://countries.dev/cities?q="+encodeURIComponent(q)+"&limit=6";
+  fetch(url).then(function(r){return r.ok?r.json():null;}).then(function(data){
+    if(mySeq!==extSearchSeq)return; // a newer search superseded this one
+    var ul=document.getElementById("sdrop");
+    var list=(data&&(data.cities||data.results||data.data))||(Array.isArray(data)?data:[]);
+    EXR=(list||[]).slice(0,6).filter(function(c){return c&&(c.lat!=null)&&(c.lng!=null||c.lon!=null)&&c.timezone;});
+    if(!EXR.length){ul.className="sdrop";return;}
+    ul.innerHTML=EXR.map(function(c,i){
+      var nm=c.name||c.city||"";var ctry=c.country||c.countryName||c.cc||"";
+      return'<li ontouchend="pickExt('+i+')" onmousedown="pickExt('+i+')"><span>'+nm+'</span><span class="sdrop-c">'+ctry+'</span></li>';
+    }).join("");
+    ul.className="sdrop open";
+  }).catch(function(){ /* offline or blocked — silently keep showing nothing extra */ });
+}
+function pickExt(i){
+  var c=EXR[i];if(!c)return;
+  var nm=c.name||c.city||"";
+  selectCity({n:nm,e:nm,f:nm,la:c.lat,lo:(c.lng!=null?c.lng:c.lon),tz:c.timezone,c:(c.country||c.countryName||c.cc||"")});
+}
 document.addEventListener("click",function(e){if(!e.target.closest("#sw"))document.getElementById("sdrop").className="sdrop";});
 
 function pick(i){
