@@ -47,6 +47,11 @@ class MainActivity : AppCompatActivity() {
             builtInZoomControls = false
             useWideViewPort = true
             loadWithOverviewMode = true
+            // Lock text scale to the page's own design regardless of the device's
+            // system font-size setting. Without this, WebView multiplies every
+            // font-size in shabbat.html by the OS accessibility font scale, which
+            // blows past the fixed-width time boxes and breaks the layout.
+            textZoom = 100
         }
 
         webView.addJavascriptInterface(Bridge(), "ShabbatNative")

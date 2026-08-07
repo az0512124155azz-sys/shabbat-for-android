@@ -43,7 +43,7 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
 .sun-lbl{font-size:12px;font-weight:700;letter-spacing:.5px;margin-bottom:10px}
 .sc-rise .sun-lbl{color:#d4880a}
 .sc-stars .sun-lbl{color:#a89aee}
-.sun-val{font-size:32px;font-weight:900}
+.sun-val{font-size:32px;font-weight:900;white-space:nowrap}
 .sc-rise .sun-val{color:#f5a623}
 .sc-stars .sun-val{color:#c4b5fd}
 
@@ -55,7 +55,7 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
 .tb{flex:1;text-align:center;display:flex;flex-direction:column;align-items:center}
 .tb-icon{font-size:34px;margin-bottom:9px}
 .tb-lbl{font-size:13px;color:#7a8a9e;font-weight:700;margin-bottom:7px}
-.tb-val{font-size:52px;font-weight:900;line-height:1}
+.tb-val{font-size:52px;font-weight:900;line-height:1;white-space:nowrap}
 .tb-sub{font-size:12px;color:#4a5a70;margin-top:9px}
 .cv{color:#f5a623}
 .hv{color:#9b7ff0}
@@ -329,7 +329,7 @@ function ft(d,tz){
   if(!d)return'--:--';
   try{
     var s=d.toLocaleTimeString(FMT_LOCALE,{hour:"2-digit",minute:"2-digit",hour12:(LANG==='en'),timeZone:tz});
-    if(s&&s.indexOf(':')>-1)return s;
+    if(s&&s.indexOf(':')>-1)return s.replace(/ (AM|PM)/i,'\u00A0$1');
   }catch(e){}
   try{
     var tzDate=new Date(d.toLocaleString('en-US',{timeZone:tz}));
