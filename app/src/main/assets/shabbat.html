@@ -6,7 +6,7 @@
 <title>שבת שלום</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{min-height:100%;font-family:Arial,Helvetica,sans-serif;color:#e2e8f0;background:#0a0f1e}
+html,body{min-height:100%;font-family:Arial,Helvetica,sans-serif;color:#e2e8f0;background:#0a0f1e;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{background:radial-gradient(ellipse at 20% 20%,rgba(99,60,180,0.35) 0%,transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(30,80,180,0.3) 0%,transparent 55%),#0a0f1e;background-attachment:fixed}
 input,button{font-family:inherit}
 input::placeholder{color:#3a4a5e}
@@ -93,8 +93,7 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
 .footer-support a{color:#93c5fd;text-decoration:none;font-weight:600}
 
 .hidden{display:none!important}
-</style>
-</head>
+</style></head>
 <body>
 <div class="page">
 
@@ -198,7 +197,7 @@ var CI=[
   {n:"פתח תקווה",e:"Petah Tikva",f:"Petah Tikva",la:32.087,lo:34.8878,tz:"Asia/Jerusalem",c:"ישראל"},
   {n:"ראשון לציון",e:"Rishon LeZion",f:"Rishon LeTsiyon",la:31.973,lo:34.7925,tz:"Asia/Jerusalem",c:"ישראל"},
   {n:"אשדוד",e:"Ashdod",f:"Ashdod",la:31.795,lo:34.65,tz:"Asia/Jerusalem",c:"ישראל"},
-  {n:"גני תקווה",e:"Ganei Tikva",f:"Guanei Tikva",la:32.0641,lo:34.8808,tz:"Asia/Jerusalem",c:"ישראל"},
+  {n:"גני תקווה",e:"Ganei Tikva",f:"Ganei Tikva",la:32.0641,lo:34.8808,tz:"Asia/Jerusalem",c:"ישראל"},
   {n:"מודיעין",e:"Modi'in",f:"Modi'in",la:31.8969,lo:35.0095,tz:"Asia/Jerusalem",c:"ישראל"},
   {n:"אילת",e:"Eilat",f:"Eilat",la:29.5581,lo:34.9482,tz:"Asia/Jerusalem",c:"ישראל"},
   {n:"צפת",e:"Tzfat",f:"Tsfat",la:32.9646,lo:35.496,tz:"Asia/Jerusalem",c:"ישראל"},
@@ -329,7 +328,7 @@ function ft(d,tz){
   if(!d)return'--:--';
   try{
     var s=d.toLocaleTimeString(FMT_LOCALE,{hour:"2-digit",minute:"2-digit",hour12:(LANG==='en'),timeZone:tz});
-    if(s&&s.indexOf(':')>-1)return s.replace(/ (AM|PM)/i,'\u00A0$1');
+    if(s&&s.indexOf(':')>-1)return s;
   }catch(e){}
   try{
     var tzDate=new Date(d.toLocaleString('en-US',{timeZone:tz}));

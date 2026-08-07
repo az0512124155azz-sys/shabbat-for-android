@@ -31,18 +31,6 @@ class MainActivity : AppCompatActivity() {
     private var pendingGeoOrigin: String? = null
     private var pendingGeoCallback: GeolocationPermissions.Callback? = null
 
-    // The app's layout is hand-tuned in fixed px/dp and doesn't have room to grow;
-    // at large OS font sizes the whole screen (native views AND the WebView content)
-    // overflows and becomes unusable. Pinning fontScale to 1.0 for this Activity's
-    // Context keeps the app's own type scale stable no matter what the user picked
-    // in the system Accessibility settings — the WebView's `textZoom = 100` below is
-    // a second, belt-and-suspenders guard specifically for the WebView content.
-    override fun attachBaseContext(newBase: Context) {
-        val config = Configuration(newBase.resources.configuration)
-        config.fontScale = 1.0f
-        super.attachBaseContext(newBase.createConfigurationContext(config))
-    }
-
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +44,8 @@ class MainActivity : AppCompatActivity() {
             domStorageEnabled = true
             allowFileAccess = true
             allowContentAccess = true
+            allowUniversalAccessFromFileURLs = true
+            allowFileAccessFromFileURLs = true
             setSupportZoom(false)
             displayZoomControls = false
             builtInZoomControls = false
