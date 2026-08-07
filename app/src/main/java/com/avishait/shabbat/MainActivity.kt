@@ -2,8 +2,10 @@ package com.avishait.shabbat
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -28,6 +30,18 @@ class MainActivity : AppCompatActivity() {
     private val locationRequestCode = 7002
     private var pendingGeoOrigin: String? = null
     private var pendingGeoCallback: GeolocationPermissions.Callback? = null
+
+    // The app's layout is hand-tuned in fixed px/dp and doesn't have room to grow;
+    // at large OS font sizes the whole screen (native views AND the WebView content)
+    // overflows and becomes unusable. Pinning fontScale to 1.0 for this Activity's
+    // Context keeps the app's own type scale stable no matter what the user picked
+    // in the system Accessibility settings — the WebView's `textZoom = 100` below is
+    // a second, belt-and-suspenders guard specifically for the WebView content.
+    override fun attachBaseContext(newBase: Context) {
+        val config = Configuration(newBase.resources.configuration)
+        config.fontScale = 1.0f
+        super.attachBaseContext(newBase.createConfigurationContext(config))
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
