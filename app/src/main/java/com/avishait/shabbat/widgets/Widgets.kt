@@ -6,13 +6,24 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
+import android.os.Build
 import android.widget.RemoteViews
 import com.avishait.shabbat.MainActivity
 import com.avishait.shabbat.R
 import com.avishait.shabbat.ShabbatCore
+import java.util.Locale
 
 fun getLocalizedContext(ctx: Context): Context {
-    return ctx
+    val hebrewLocale = Locale("he", "IL")
+    val config = Configuration(ctx.resources.configuration)
+    config.setLocale(hebrewLocale)
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        ctx.createConfigurationContext(config)
+    } else {
+        ctx.resources.configuration.setLocale(hebrewLocale)
+        ctx
+    }
 }
 
 object WidgetUpdater {

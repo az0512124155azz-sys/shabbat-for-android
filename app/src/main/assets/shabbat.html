@@ -93,6 +93,7 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
 .footer-support a{color:#93c5fd;text-decoration:none;font-weight:600}
 
 .hidden{display:none!important}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 </style></head>
 <body>
 <div class="page">
@@ -107,7 +108,7 @@ input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100
     <div class="sb">
       <span style="font-size:20px;flex-shrink:0">📍</span>
       <input id="inp" type="text" data-i18n-ph="searchCity" placeholder="חפש עיר..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <span id="gpsBtn" style="font-size:19px;flex-shrink:0;cursor:pointer;padding:2px 4px;opacity:0.75;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent" title="מיקום נוכחי">🎯</span>
+      <span id="gpsBtn" style="display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;padding:2px 4px;opacity:0.75;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent" title="מיקום נוכחי"><svg id="gpsIcon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span>
     </div>
     <ul class="sdrop" id="sdrop"></ul>
   </div>
@@ -570,9 +571,13 @@ function nearestCity(la,lo){
   return{city:best,km:bestD};
 }
 function gpsDone(){
-  var btn=document.getElementById("gpsBtn");
-  if(btn){btn.textContent="🎯";btn.style.opacity="0.75";}
+  var btn=document.getElementById("gpsBtn"),icon=document.getElementById("gpsIcon");
+  if(btn){btn.style.opacity="0.75";}
+  if(icon){icon.style.animation="";}
+  gpsBusy=false;
+  if(gpsSafetyTimer){clearTimeout(gpsSafetyTimer);gpsSafetyTimer=null;}
 }
+var gpsBusy=false,gpsSafetyTimer=null;
 // If no known city is within ~70km, look up the nearest city + timezone via Hebcal's
 // public JSON API (JSONP, to avoid any CORS/file-origin issues in the WebView).
 function hebcalLookup(la,lo,cb){
@@ -634,8 +639,12 @@ window.nativeLocationResult=function(la,lo,ok){
   else gpsDone();
 };
 document.getElementById("gpsBtn").addEventListener("click",function(){
-  var btn=this;
-  btn.style.opacity="1";btn.textContent="⏳";
+  if(gpsBusy)return;
+  gpsBusy=true;
+  var btn=this,icon=document.getElementById("gpsIcon");
+  btn.style.opacity="1";
+  if(icon)icon.style.animation="spin 1s linear infinite";
+  gpsSafetyTimer=setTimeout(gpsDone,20000); // hard ceiling: never stay "loading" forever
   if(navigator.geolocation&&navigator.geolocation.getCurrentPosition){
     navigator.geolocation.getCurrentPosition(function(pos){
       gpsApply(pos.coords.latitude,pos.coords.longitude);

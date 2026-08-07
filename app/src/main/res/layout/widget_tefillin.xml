@@ -29,12 +29,10 @@
         android:gravity="center"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:background="@drawable/widget_btn_off"
         android:maxLines="1"
-        android:autoSizeTextType="uniform"
-        android:autoSizeMinTextSize="10sp"
-        android:autoSizeMaxTextSize="15sp" />
+        android:ellipsize="end" />
 </LinearLayout>
