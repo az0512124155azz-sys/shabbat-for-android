@@ -2,8 +2,10 @@ package com.avishait.shabbat
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -49,6 +51,11 @@ class MainActivity : AppCompatActivity() {
             builtInZoomControls = false
             useWideViewPort = true
             loadWithOverviewMode = true
+            // Lock text scale to the page's own design regardless of the device's
+            // system font-size setting. Without this, WebView multiplies every
+            // font-size in shabbat.html by the OS accessibility font scale, which
+            // blows past the fixed-width time boxes and breaks the layout.
+            textZoom = 100
         }
 
         webView.addJavascriptInterface(Bridge(), "ShabbatNative")

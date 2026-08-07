@@ -6,24 +6,13 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
-import android.os.Build
 import android.widget.RemoteViews
 import com.avishait.shabbat.MainActivity
 import com.avishait.shabbat.R
 import com.avishait.shabbat.ShabbatCore
-import java.util.Locale
 
-fun getHebrewContext(ctx: Context): Context {
-    val hebrewLocale = Locale("he", "IL")
-    val config = Configuration(ctx.resources.configuration)
-    config.setLocale(hebrewLocale)
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-        ctx.createConfigurationContext(config)
-    } else {
-        ctx.resources.configuration.setLocale(hebrewLocale)
-        ctx
-    }
+fun getLocalizedContext(ctx: Context): Context {
+    return ctx
 }
 
 object WidgetUpdater {
@@ -69,15 +58,15 @@ abstract class BaseShabbatWidget : AppWidgetProvider() {
 /** Shabbat entry and exit times */
 class ShabbatTimesWidget : BaseShabbatWidget() {
     override fun views(ctx: Context): RemoteViews {
-        val hctx = getHebrewContext(ctx)
+        val hctx = getLocalizedContext(ctx)
         val city = ShabbatCore.cityOrDefault(ctx)
         val t = ShabbatCore.nextShabbat(city)
         val rv = RemoteViews(ctx.packageName, R.layout.widget_two)
-        rv.setTextViewText(R.id.wTitle, hctx.getString(R.string.widget_label_shabbat) + " · " + city.name)
+        rv.setTextViewText(R.id.wTitle, hctx.getString(R.string.widget_label_shabbat) + " · " + city.localizedName(hctx))
         rv.setTextViewText(R.id.wLbl1, hctx.getString(R.string.widget_label_candle))
-        rv.setTextViewText(R.id.wVal1, ShabbatCore.fmt(t.candle, city.tz))
+        rv.setTextViewText(R.id.wVal1, ShabbatCore.fmt(hctx, t.candle, city.tz))
         rv.setTextViewText(R.id.wLbl2, hctx.getString(R.string.widget_label_havdalah))
-        rv.setTextViewText(R.id.wVal2, ShabbatCore.fmt(t.havdalah, city.tz))
+        rv.setTextViewText(R.id.wVal2, ShabbatCore.fmt(hctx, t.havdalah, city.tz))
         return rv
     }
 }
@@ -85,13 +74,13 @@ class ShabbatTimesWidget : BaseShabbatWidget() {
 /** Sunrise time */
 class NetzWidget : BaseShabbatWidget() {
     override fun views(ctx: Context): RemoteViews {
-        val hctx = getHebrewContext(ctx)
+        val hctx = getLocalizedContext(ctx)
         val city = ShabbatCore.cityOrDefault(ctx)
         val rv = RemoteViews(ctx.packageName, R.layout.widget_one)
         rv.setTextViewText(R.id.wTitle, hctx.getString(R.string.widget_label_sunrise))
-        rv.setTextViewText(R.id.wVal, ShabbatCore.fmt(ShabbatCore.sunrise(city, ShabbatCore.todayNoon()), city.tz))
+        rv.setTextViewText(R.id.wVal, ShabbatCore.fmt(hctx, ShabbatCore.sunrise(city, ShabbatCore.todayNoon()), city.tz))
         rv.setTextColor(R.id.wVal, 0xFFF5A623.toInt())
-        rv.setTextViewText(R.id.wSub, city.name)
+        rv.setTextViewText(R.id.wSub, city.localizedName(hctx))
         return rv
     }
 }
@@ -99,13 +88,13 @@ class NetzWidget : BaseShabbatWidget() {
 /** Nightfall time */
 class TzeitWidget : BaseShabbatWidget() {
     override fun views(ctx: Context): RemoteViews {
-        val hctx = getHebrewContext(ctx)
+        val hctx = getLocalizedContext(ctx)
         val city = ShabbatCore.cityOrDefault(ctx)
         val rv = RemoteViews(ctx.packageName, R.layout.widget_one)
         rv.setTextViewText(R.id.wTitle, hctx.getString(R.string.widget_label_nightfall))
-        rv.setTextViewText(R.id.wVal, ShabbatCore.fmt(ShabbatCore.tzeit(city, ShabbatCore.todayNoon()), city.tz))
+        rv.setTextViewText(R.id.wVal, ShabbatCore.fmt(hctx, ShabbatCore.tzeit(city, ShabbatCore.todayNoon()), city.tz))
         rv.setTextColor(R.id.wVal, 0xFFC4B5FD.toInt())
-        rv.setTextViewText(R.id.wSub, city.name)
+        rv.setTextViewText(R.id.wSub, city.localizedName(hctx))
         return rv
     }
 }
@@ -113,15 +102,15 @@ class TzeitWidget : BaseShabbatWidget() {
 /** Sunrise and nightfall times */
 class SunTimesWidget : BaseShabbatWidget() {
     override fun views(ctx: Context): RemoteViews {
-        val hctx = getHebrewContext(ctx)
+        val hctx = getLocalizedContext(ctx)
         val city = ShabbatCore.cityOrDefault(ctx)
         val today = ShabbatCore.todayNoon()
         val rv = RemoteViews(ctx.packageName, R.layout.widget_two)
-        rv.setTextViewText(R.id.wTitle, hctx.getString(R.string.widget_label_sun_times) + " · " + city.name)
+        rv.setTextViewText(R.id.wTitle, hctx.getString(R.string.widget_label_sun_times) + " · " + city.localizedName(hctx))
         rv.setTextViewText(R.id.wLbl1, hctx.getString(R.string.widget_label_sunrise))
-        rv.setTextViewText(R.id.wVal1, ShabbatCore.fmt(ShabbatCore.sunrise(city, today), city.tz))
+        rv.setTextViewText(R.id.wVal1, ShabbatCore.fmt(hctx, ShabbatCore.sunrise(city, today), city.tz))
         rv.setTextViewText(R.id.wLbl2, hctx.getString(R.string.widget_label_nightfall))
-        rv.setTextViewText(R.id.wVal2, ShabbatCore.fmt(ShabbatCore.tzeit(city, today), city.tz))
+        rv.setTextViewText(R.id.wVal2, ShabbatCore.fmt(hctx, ShabbatCore.tzeit(city, today), city.tz))
         return rv
     }
 }
@@ -129,12 +118,12 @@ class SunTimesWidget : BaseShabbatWidget() {
 /** Weekly Torah portion */
 class ParashaWidget : BaseShabbatWidget() {
     override fun views(ctx: Context): RemoteViews {
-        val hctx = getHebrewContext(ctx)
+        val hctx = getLocalizedContext(ctx)
         val city = ShabbatCore.cityOrDefault(ctx)
         val t = ShabbatCore.nextShabbat(city)
         val rv = RemoteViews(ctx.packageName, R.layout.widget_parasha)
         rv.setTextViewText(R.id.wTitle, hctx.getString(R.string.widget_title_parasha))
-        val p = ShabbatCore.parasha(t.saturday)
+        val p = ShabbatCore.parasha(hctx, t.saturday)
         val label = hctx.getString(R.string.widget_label_parasha)
         rv.setTextViewText(R.id.wParasha, if (p.isEmpty()) "—" else "$label $p")
         return rv
@@ -164,7 +153,7 @@ class TefillinWidget : AppWidgetProvider() {
         const val ACTION_TOGGLE = "com.avishait.shabbat.TOGGLE_TEF"
 
         fun build(ctx: Context): RemoteViews {
-            val hctx = getHebrewContext(ctx)
+            val hctx = getLocalizedContext(ctx)
             val on = ShabbatCore.isTefillinToday(ctx)
             val rv = RemoteViews(ctx.packageName, R.layout.widget_tefillin)
             rv.setTextViewText(R.id.wTitle, hctx.getString(R.string.widget_title_tefillin))

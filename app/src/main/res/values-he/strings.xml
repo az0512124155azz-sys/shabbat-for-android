@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">שבת</string>
+    <string name="app_name">shabbat</string>
 
     <!-- Widget descriptions -->
     <string name="widget_desc_shabbat">כניסת ויציאת השבת הקרובה</string>

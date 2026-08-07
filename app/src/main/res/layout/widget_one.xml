@@ -6,30 +6,43 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@drawable/widget_bg"
-    android:layoutDirection="rtl"
-    android:padding="10dp">
+    android:layoutDirection="locale"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/wTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
         android:textSize="12sp"
         android:textColor="#7A8A9E"
-        android:layout_marginBottom="4dp"/>
+        android:maxLines="1"
+        android:ellipsize="end" />
 
     <TextView
         android:id="@+id/wVal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2.5"
+        android:gravity="center"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="#F5A623"/>
+        android:textColor="#F5A623"
+        android:maxLines="1"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="28sp"
+        android:autoSizeStepGranularity="2sp" />
 
     <TextView
         android:id="@+id/wSub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
         android:textSize="10sp"
         android:textColor="#4A5A70"
-        android:layout_marginTop="2dp"/>
+        android:maxLines="1"
+        android:ellipsize="end" />
 </LinearLayout>
