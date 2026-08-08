@@ -604,7 +604,7 @@ function hebcalLookup(la,lo,cb){
     if(script.parentNode)script.parentNode.removeChild(script);
     cb(data);
   };
-  script.src="https://www.hebcal.com/shabbat?cfg=json&latitude="+encodeURIComponent(la)+"&longitude="+encodeURIComponent(lo)+"&M=on&leyning=off&callback="+cbName;
+  script.src="https://www.hebcal.com/shabbat?cfg=jsonp&latitude="+encodeURIComponent(la)+"&longitude="+encodeURIComponent(lo)+"&M=on&leyning=off&callback="+cbName;
   script.onerror=function(){
     if(!done){delete window[cbName];if(script.parentNode)script.parentNode.removeChild(script);cb(null);}
   };
