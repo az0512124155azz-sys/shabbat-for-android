@@ -615,17 +615,19 @@ var hebcalOverlaySeq=0;
 function overlayHebcalShabbatTimes(la,lo,tz,fri,sat){
   var mySeq=++hebcalOverlaySeq;
   hebcalLookup(la,lo,function(data){
-    if(mySeq!==hebcalOverlaySeq||!data||!data.items)return; // superseded or failed — keep local calc
+    if(mySeq!==hebcalOverlaySeq||!data||!data.items)return;
     var candleD=null,havdD=null;
     for(var i=0;i<data.items.length;i++){
       var it=data.items[i];
       if(!it.date)continue;
+      // Hebcal returns times like "2026-08-07T19:15:00+03:00" — parse as-is
       var d=new Date(it.date);
-      if(it.category==="candles"&&sameLocalDay(d,fri,tz))candleD=d;
-      if(it.category==="havdalah"&&sameLocalDay(d,sat,tz))havdD=d;
+      if(isNaN(d.getTime()))continue;
+      if(it.category==="candles")candleD=d;
+      if(it.category==="havdalah")havdD=d;
     }
-    if(candleD)document.getElementById("tCandle").textContent=ft(candleD,tz);
-    if(havdD)document.getElementById("tHav").textContent=ft(havdD,tz);
+    if(candleD){document.getElementById("tCandle").textContent=ft(candleD,tz);}
+    if(havdD){document.getElementById("tHav").textContent=ft(havdD,tz);}
   });
 }
 function sameLocalDay(d,ref,tz){
